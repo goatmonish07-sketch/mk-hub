@@ -55,6 +55,13 @@ export default async function handler(request) {
   for (const k in CORS) out.set(k, CORS[k]);
   out.delete('content-encoding');
 
+  // Posters/logos: cache aggressively on Vercel's CDN so repeat loads never
+  // hit the IPTV panel again (panels throttle bursts of poster requests,
+  // which left cards blank). One week on CDN, one day in the browser.
+  if (/^image\//i.test(ctype)) {
+    out.set('Cache-Control', 'public, s-maxage=604800, max-age=86400, stale-while-revalidate=86400');
+  }
+
   // Rewrite HLS manifests so segments route back through the proxy.
   if (isManifest) {
     const text = await resp.text();
