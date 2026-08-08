@@ -3,7 +3,7 @@
    small static allow-list. API/proxy/stream/cross-origin requests are never
    intercepted, so playback, logins and image proxying behave exactly as
    before whether the SW is present or not. */
-const VERSION = 'mk-v1';
+const VERSION = 'mk-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 

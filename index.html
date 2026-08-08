@@ -736,12 +736,21 @@
     .sheet .shero .sm{flex-direction:column;align-items:flex-start;gap:14px}
   }
   @media (max-width:680px){
-    header.bar{flex-wrap:wrap}
+    header.bar{flex-wrap:wrap;gap:9px}
+    /* icon-only "+" so the brand, Playlist and all 3 icon buttons stay on ONE row */
+    #addBtn span{display:none}
+    #addBtn{padding:11px;border-radius:14px}
+    #addBtn svg{width:20px;height:20px}
     .searchbox{width:100%;order:6}.searchbox.wide{width:100%}
     nav.tabs{width:100%;order:7;justify-content:space-between}
     nav.tabs button{flex:1;text-align:center;padding:8px 6px}
     .brand b{display:none}
     .hero h1{font-size:30px}
+  }
+  @media (max-width:400px){
+    header.bar{gap:7px;padding:10px}
+    .ic{width:38px;height:38px}
+    .brand .orb{width:34px;height:34px}
   }
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.05s!important}}
 
