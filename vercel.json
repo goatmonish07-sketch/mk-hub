@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "mk-hub-fawn.vercel.app" }],
+      "destination": "https://mk-ott-hub.vercel.app/:path*",
+      "permanent": false
+    }
+  ]
+}
