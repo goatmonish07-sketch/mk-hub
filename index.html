@@ -1160,7 +1160,6 @@
       <button class="gbtn" id="extDl" style="justify-content:center;padding:14px;border-radius:16px">Download playlist for VLC (.m3u)</button>
       <button class="gbtn" id="extOpen" style="justify-content:center;padding:14px;border-radius:16px">Open link directly</button>
       <button class="gbtn" id="extCopy" style="justify-content:center;padding:14px;border-radius:16px">Copy stream URL</button>
-      <button class="gbtn" id="extBrowser" style="justify-content:center;padding:14px;border-radius:16px;display:none;opacity:.75;font-size:13px">Play in browser instead</button>
       <div class="hintbox" id="extSteps" class="hidden"></div>
       <div class="hintbox" id="extUrl" style="word-break:break-all;font-size:11px;font-family:ui-monospace,monospace;color:var(--muted-2)"></div>
     </div>
@@ -2361,20 +2360,15 @@ function macHelp(){
   try{navigator.clipboard.writeText(link).then(done,done);}catch(e){const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();try{document.execCommand('copy');done();}catch(_){toast('Open Safari and go to '+link);}t.remove();}
 }
 function intentUrl(url,pkg,title){try{const u=new URL(url);const rest=u.host+u.pathname+u.search;return 'intent://'+rest+'#Intent;scheme='+u.protocol.replace(':','')+';package='+pkg+';type=video/*;S.title='+encodeURIComponent(title||'')+';end';}catch(e){return url;}}
-function openExternal(url,title,item,queue,idx){
+function openExternal(url,title){
   if(!url){toast('No stream URL');return;}
   clearTimeout(idleT);$('#player').classList.remove('idle');
   S._extUrl=url;S._extTitle=title||'Stream';$('#extUrl').textContent=url;
-  // Remember the item + queue so the "Play in browser instead" fallback can hand
-  // this title to the built-in player if the viewer has no external app.
-  S._extItem=item||null;S._extQ=(queue&&queue.length?queue:(item?[item]:null));S._extI=idx||0;
   // tailor the options to the device
   const mx=$('#extMX'),vlc=$('#extVLC'),dl=$('#extDl'),steps=$('#extSteps'),hint=$('#extHint');
   mx.style.display=isAndroid?'':'none';                 // MX Player intent is Android-only
   const iina=$('#extIINA');if(iina)iina.style.display=isMac?'':'none'; // IINA registers iina:// on install
   dl.style.display=isDesktop?'':'none';                 // .m3u download makes sense on desktop
-  // Only VOD (movies/series) get the in-browser fallback \u2014 live stays in-app by default.
-  const br=$('#extBrowser');if(br)br.style.display=S._extItem?'':'none';
   if(isAndroid){vlc.textContent='Open in VLC';steps.classList.add('hidden');hint.innerHTML='Plays straight from your provider \u2014 nothing streams through this site. VLC and MX Player also handle <b>MKV, HEVC and Dolby</b> that browsers can\u2019t.';}
   else if(isIOS){vlc.textContent='Open in VLC (iOS)';steps.classList.add('hidden');hint.innerHTML='Plays directly from your provider \u2014 no proxy, no data through this site. If nothing opens, install VLC, or use <b>Copy stream URL</b> \u2192 VLC \u2192 Network Stream.';}
   else{ // desktop / TV: browsers can't launch VLC directly
@@ -2406,9 +2400,7 @@ $('#extDl').onclick=()=>{
     toast('Saved .m3u — open it (VLC plays it if it\u2019s your default)');
   }catch(e){toast('Download failed — use Copy URL');}
 };
-$('#extOpen').onclick=()=>{window.open(S._extUrl,'_blank');};
-const _brBtn=$('#extBrowser');if(_brBtn)_brBtn.onclick=()=>{const it=S._extItem;if(!it)return;const isLive=it.kind==='live';const sub=isLive?(nowProg(it.tvgId)?('Now: '+nowProg(it.tvgId).title):(it.group||'')):(it.group||'');closeExt();playItem(it,it.name,sub,isLive,S._extQ||[it],S._extI||0);};
-$('#extCopy').onclick=async()=>{try{await navigator.clipboard.writeText(S._extUrl);toast('Stream URL copied');}catch(e){const t=document.createElement('textarea');t.value=S._extUrl;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Stream URL copied');}catch(_){toast('Copy failed');}t.remove();}};
+$('#extOpen').onclick=()=>{window.open(S._extUrl,'_blank');};$('#extCopy').onclick=async()=>{try{await navigator.clipboard.writeText(S._extUrl);toast('Stream URL copied');}catch(e){const t=document.createElement('textarea');t.value=S._extUrl;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Stream URL copied');}catch(_){toast('Copy failed');}t.remove();}};
 $('#pExt').onclick=()=>{if(S.current)openExternal(S.current.url,S.current.name);};
 window.openExternal=openExternal;
 
