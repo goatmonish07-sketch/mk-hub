@@ -825,6 +825,53 @@
     background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.045) 0 1px,transparent 1px 52px),repeating-linear-gradient(-45deg,rgba(255,255,255,.045) 0 1px,transparent 1px 52px);
     animation:webdrift 26s linear infinite}
   @keyframes webdrift{to{background-position:52px 52px,-52px 52px}}
+
+  /* ============================================================
+     Advanced aesthetics — cinematic motion + premium micro-UX
+     (all motion is disabled under prefers-reduced-motion below)
+     ============================================================ */
+
+  /* Cinematic ambient background — slow Ken Burns drift */
+  @keyframes bgdrift{0%{transform:scale(1.1) translate3d(0,0,0)}100%{transform:scale(1.22) translate3d(2.5%,1.5%,0)}}
+  .backdrop .img.show{animation:bgdrift 46s ease-in-out infinite alternate}
+
+  /* Spotlight hero — Ken Burns slow zoom on the big cards */
+  @keyframes kenburns{0%{transform:scale(1.03) translate3d(0,0,0)}100%{transform:scale(1.16) translate3d(-2.5%,-2%,0)}}
+  .scard .bg{will-change:transform;transform-origin:52% 42%;animation:kenburns 22s ease-in-out infinite alternate}
+  .spot .scard:nth-child(2n) .bg{animation-delay:-7s}
+  .spot .scard:nth-child(3n) .bg{animation-delay:-13s}
+  .scard:hover .bg{animation-play-state:paused;transform:scale(1.07)}
+  .scard .grad{transition:opacity .4s}
+  .scard:hover .grad{opacity:.82}
+
+  /* 3D tilt poster cards + ambient accent glow */
+  .card{perspective:900px}
+  .poster{transition:transform .22s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s;transform-style:preserve-3d}
+  .poster.tilt{transition:transform .05s linear,box-shadow .3s,border-color .3s}
+  .card:hover .poster{box-shadow:0 22px 48px rgba(0,0,0,.62),0 0 34px var(--blue-soft),inset 0 1px 0 var(--hair-bright)}
+  .poster .gloss{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .25s;mix-blend-mode:overlay;
+    background:radial-gradient(circle at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.55),transparent 42%)}
+  .card:hover .poster .gloss{opacity:.9}
+
+  /* Tactile press ripple for buttons */
+  .gbtn,.sbtn,.catchip,.ic{position:relative;overflow:hidden}
+  .rippl{position:absolute;border-radius:50%;transform:translate(-50%,-50%) scale(0);pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,.5),rgba(255,255,255,0) 70%);animation:rippl .6s ease-out forwards}
+  @keyframes rippl{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+
+  /* Scroll-reactive frosted top bar */
+  header.bar{transition:margin .35s ease,box-shadow .35s ease,border-color .35s ease,background .35s ease}
+  header.bar.scrolled{margin-top:5px;border-color:var(--hair-bright);
+    box-shadow:inset 0 1px 0 var(--hair-bright),0 18px 46px rgba(0,0,0,.55)}
+
+  /* Smooth view transition on tab switch */
+  @keyframes viewin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  #main.vt{animation:viewin .38s cubic-bezier(.2,.7,.2,1)}
+
+  @media (prefers-reduced-motion: reduce){
+    .backdrop .img.show,.scard .bg,#main.vt,.rippl{animation:none!important}
+    .poster,.scard .bg,header.bar{transition:none!important}
+  }
 </style>
 </head>
 <body>
@@ -1632,6 +1679,7 @@ function posterCard(it,kind){
   const metaLine=[m.year,m.lang].filter(Boolean).join(' · ')||esc(it.group||'');
   card.innerHTML=`<div class="poster">
       <div class="sheen"></div>
+      <div class="gloss"></div>
       <div class="rate"></div>
       <div class="q ${qcls} ${m.q?'show':''}">${esc(m.q||'')}</div>
       <button class="fav ${fav?'on':''}" aria-label="Favorite"><svg viewBox="0 0 24 24" fill="${fav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="m12 2 3 6.5 7 .6-5.3 4.6 1.6 6.8L12 17l-6.1 3.5 1.6-6.8L2.2 9.1l7-.6z"/></svg></button>
@@ -2056,7 +2104,10 @@ function render(){
   else if(S.tab==='movies')renderSection('movies');
   else renderSection('series');
 }
-function switchTab(t){S.tab=t;$('#main').scrollTop=0;render();}
+function switchTab(t){S.tab=t;$('#main').scrollTop=0;render();animView();}
+/* smooth fade/slide when the main view changes (tab switch / activate) */
+let _reduceMotion=false;try{_reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+function animView(){if(_reduceMotion)return;const m=$('#main');if(!m)return;m.classList.remove('vt');void m.offsetWidth;m.classList.add('vt');}
 
 /* ===== detail sheet ===== */
 function openMovie(it,card){
@@ -3402,6 +3453,51 @@ document.addEventListener('keydown',e=>{const t=(e.target.tagName||'').toLowerCa
 let tt;function toast(m){const e=$('#toast');e.textContent=m;e.onclick=null;e.style.cursor='';e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2800);}
 /* A tappable toast — used for one-tap play ("tap to choose another app"). */
 function toastAction(m,fn){const e=$('#toast');e.textContent=m;e.style.cursor='pointer';e.onclick=()=>{e.classList.remove('show');e.onclick=null;e.style.cursor='';if(fn)fn();};e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>{e.classList.remove('show');e.onclick=null;e.style.cursor='';},5200);}
+
+/* ===== Advanced aesthetics: tilt, ripple, scroll-reactive bar ===== */
+(function(){
+  if(_reduceMotion)return;
+  const fine=(()=>{try{return matchMedia('(hover:hover) and (pointer:fine)').matches;}catch(e){return false;}})();
+
+  /* 3D tilt + gloss follow on poster cards (pointer devices only) */
+  if(fine){
+    const main=document.getElementById('main');
+    let cur=null;
+    function reset(card){const p=card&&card.querySelector('.poster');if(p){p.classList.remove('tilt');p.style.transform='';}}
+    main.addEventListener('pointermove',e=>{
+      const card=e.target.closest&&e.target.closest('.card');
+      if(card!==cur){if(cur)reset(cur);cur=card;}
+      if(!card)return;
+      const p=card.querySelector('.poster');if(!p)return;
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
+      p.classList.add('tilt');
+      p.style.transform='rotateY('+(x*11).toFixed(2)+'deg) rotateX('+(-y*11).toFixed(2)+'deg) translateZ(0)';
+      p.style.setProperty('--gx',((x+0.5)*100).toFixed(1)+'%');
+      p.style.setProperty('--gy',((y+0.5)*100).toFixed(1)+'%');
+    },{passive:true});
+    main.addEventListener('pointerleave',()=>{if(cur){reset(cur);cur=null;}},{passive:true});
+    main.addEventListener('pointerdown',()=>{if(cur){reset(cur);cur=null;}},{passive:true});
+  }
+
+  /* Tactile ripple on buttons */
+  document.addEventListener('pointerdown',e=>{
+    const b=e.target.closest&&e.target.closest('.gbtn,.sbtn,.catchip,.ic');
+    if(!b)return;
+    const r=b.getBoundingClientRect();
+    const d=Math.max(r.width,r.height)*2;
+    const s=document.createElement('span');s.className='rippl';
+    s.style.width=s.style.height=d+'px';
+    s.style.left=(e.clientX-r.left)+'px';s.style.top=(e.clientY-r.top)+'px';
+    b.appendChild(s);setTimeout(()=>s.remove(),600);
+  },{passive:true});
+
+  /* Scroll-reactive frosted header */
+  const main=document.getElementById('main'),bar=document.querySelector('header.bar');
+  if(main&&bar){let raf=0;main.addEventListener('scroll',()=>{
+    if(raf)return;raf=requestAnimationFrame(()=>{raf=0;bar.classList.toggle('scrolled',main.scrollTop>12);});
+  },{passive:true});}
+})();
 
 /* ===== PWA: installable app + offline shell ===== */
 (function(){
