@@ -1160,6 +1160,7 @@
       <button class="gbtn" id="extDl" style="justify-content:center;padding:14px;border-radius:16px">Download playlist for VLC (.m3u)</button>
       <button class="gbtn" id="extOpen" style="justify-content:center;padding:14px;border-radius:16px">Open link directly</button>
       <button class="gbtn" id="extCopy" style="justify-content:center;padding:14px;border-radius:16px">Copy stream URL</button>
+      <button class="gbtn" id="extBrowser" style="justify-content:center;padding:14px;border-radius:16px;display:none;opacity:.75;font-size:13px">Play in browser instead</button>
       <div class="hintbox" id="extSteps" class="hidden"></div>
       <div class="hintbox" id="extUrl" style="word-break:break-all;font-size:11px;font-family:ui-monospace,monospace;color:var(--muted-2)"></div>
     </div>
@@ -2016,7 +2017,7 @@ function openMovie(it,card){
     </div>`;
   if(backdrop)setBg(imgURL(backdrop));
   scrim.classList.add('show');
-  $('#sheetX').onclick=closeSheet; $('#sheetPlay').onclick=()=>{closeSheet();playItem(it,it.name,it.group,false,[it],0);};
+  $('#sheetX').onclick=closeSheet; $('#sheetPlay').onclick=()=>{closeSheet();openExternal(it.url,it.name,it,[it],0);};
   $('#sheetFav').onclick=()=>{toggleFav(it);$('#sheetFav').textContent=S.favorites[favKey(it)]?'★ In Favorites':'☆ Add to Favorites';};
   if(!overview&&hasMetaKey()){const yy=metaOf(it).year;metaSearch(it.name,'movie',yy).then(m=>{if(m&&m.yearOk){if(m.overview)$('#sheetOver').textContent=m.overview;if(m.backdrop){$('.shero .art',sheet).style.backgroundImage=`url('${m.backdrop}')`;setBg(m.backdrop);}}});}
 }
@@ -2041,7 +2042,7 @@ async function openSeries(it){
       const el=$('#eplist');eps.forEach((e,i)=>{const r=document.createElement('div');r.className='epitem';
         r.innerHTML=`<div class="epn">${esc(e.ep||i+1)}</div><div class="epi"><b>${esc(e.title)}</b><span>${e.info&&e.info.duration?esc(e.info.duration):''}</span></div>
           <div class="eppl"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg></div>`;
-        r.onclick=()=>{closeSheet();S.playSeries=it;const queue=eps.map(x=>({name:it.name+' · '+(x.title),url:x.url,group:it.name,kind:'series'}));playItem(queue[i],queue[i].name,it.name,false,queue,i);};
+        r.onclick=()=>{closeSheet();S.playSeries=it;const queue=eps.map(x=>({name:it.name+' · '+(x.title),url:x.url,group:it.name,kind:'series'}));openExternal(queue[i].url,queue[i].name,queue[i],queue,i);};
         el.appendChild(r);});
     }
     drawEps();
@@ -2360,20 +2361,25 @@ function macHelp(){
   try{navigator.clipboard.writeText(link).then(done,done);}catch(e){const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();try{document.execCommand('copy');done();}catch(_){toast('Open Safari and go to '+link);}t.remove();}
 }
 function intentUrl(url,pkg,title){try{const u=new URL(url);const rest=u.host+u.pathname+u.search;return 'intent://'+rest+'#Intent;scheme='+u.protocol.replace(':','')+';package='+pkg+';type=video/*;S.title='+encodeURIComponent(title||'')+';end';}catch(e){return url;}}
-function openExternal(url,title){
+function openExternal(url,title,item,queue,idx){
   if(!url){toast('No stream URL');return;}
   clearTimeout(idleT);$('#player').classList.remove('idle');
   S._extUrl=url;S._extTitle=title||'Stream';$('#extUrl').textContent=url;
+  // Remember the item + queue so the "Play in browser instead" fallback can hand
+  // this title to the built-in player if the viewer has no external app.
+  S._extItem=item||null;S._extQ=(queue&&queue.length?queue:(item?[item]:null));S._extI=idx||0;
   // tailor the options to the device
   const mx=$('#extMX'),vlc=$('#extVLC'),dl=$('#extDl'),steps=$('#extSteps'),hint=$('#extHint');
   mx.style.display=isAndroid?'':'none';                 // MX Player intent is Android-only
   const iina=$('#extIINA');if(iina)iina.style.display=isMac?'':'none'; // IINA registers iina:// on install
   dl.style.display=isDesktop?'':'none';                 // .m3u download makes sense on desktop
-  if(isAndroid){vlc.textContent='Open in VLC';steps.classList.add('hidden');hint.innerHTML='VLC and MX Player play <b>live TV, MKV, HEVC and Dolby</b> that browsers can\u2019t.';}
-  else if(isIOS){vlc.textContent='Open in VLC (iOS)';steps.classList.add('hidden');hint.innerHTML='VLC for Mobile plays formats Safari can\u2019t. If nothing opens, install VLC, or use <b>Copy stream URL</b> \u2192 VLC \u2192 Network Stream.';}
+  // Only VOD (movies/series) get the in-browser fallback \u2014 live stays in-app by default.
+  const br=$('#extBrowser');if(br)br.style.display=S._extItem?'':'none';
+  if(isAndroid){vlc.textContent='Open in VLC';steps.classList.add('hidden');hint.innerHTML='Plays straight from your provider \u2014 nothing streams through this site. VLC and MX Player also handle <b>MKV, HEVC and Dolby</b> that browsers can\u2019t.';}
+  else if(isIOS){vlc.textContent='Open in VLC (iOS)';steps.classList.add('hidden');hint.innerHTML='Plays directly from your provider \u2014 no proxy, no data through this site. If nothing opens, install VLC, or use <b>Copy stream URL</b> \u2192 VLC \u2192 Network Stream.';}
   else{ // desktop / TV: browsers can't launch VLC directly
     vlc.textContent='Open with vlc:// (if installed)';
-    hint.innerHTML='Browsers on computers/TVs can\u2019t force VLC open. Best options: <b>Download playlist</b> (opens in VLC if it\u2019s your default for .m3u), or <b>Copy stream URL</b> and paste it into VLC.';
+    hint.innerHTML='Plays directly from your provider (no proxy). Browsers on computers/TVs can\u2019t force VLC open \u2014 best options: <b>Download playlist</b> (opens in VLC if it\u2019s your default for .m3u), or <b>Copy stream URL</b> and paste it into VLC.';
     steps.classList.remove('hidden');
     steps.innerHTML='<b>In VLC:</b> '+(isMac?'File \u2192 Open Network\u2026':'Media \u2192 Open Network Stream\u2026')+' \u2192 paste the URL \u2192 Play.';
   }
@@ -2401,6 +2407,7 @@ $('#extDl').onclick=()=>{
   }catch(e){toast('Download failed — use Copy URL');}
 };
 $('#extOpen').onclick=()=>{window.open(S._extUrl,'_blank');};
+const _brBtn=$('#extBrowser');if(_brBtn)_brBtn.onclick=()=>{const it=S._extItem;if(!it)return;closeExt();playItem(it,it.name,it.group||'',false,S._extQ||[it],S._extI||0);};
 $('#extCopy').onclick=async()=>{try{await navigator.clipboard.writeText(S._extUrl);toast('Stream URL copied');}catch(e){const t=document.createElement('textarea');t.value=S._extUrl;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Stream URL copied');}catch(_){toast('Copy failed');}t.remove();}};
 $('#pExt').onclick=()=>{if(S.current)openExternal(S.current.url,S.current.name);};
 window.openExternal=openExternal;
