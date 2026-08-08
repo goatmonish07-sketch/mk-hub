@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MK — IPTV</title>
+<!-- PWA / installable app -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#05070C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MK">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <style>
   :root{
     --ink:#05070C;
@@ -838,6 +847,7 @@
       <input id="search" type="text" placeholder="Search" autocomplete="off" spellcheck="false">
     </div>
     <button class="gbtn accent" id="addBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg><span>Playlist</span></button>
+    <button class="ic" id="plBtn" aria-label="Switch playlist" title="Switch playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 6H3M21 12H3M21 18H3"/><path d="M8 4l-3 2 3 2" fill="currentColor" stroke="none"/></svg></button>
     <button class="ic" id="mvBtn" aria-label="Multi-View" title="Multi-View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></button>
     <button class="ic" id="setBtn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </header>
@@ -1004,6 +1014,14 @@
   <div class="modal">
     <div class="mh"><h2>Settings</h2><button class="mx" id="setClose">✕</button></div>
     <div class="mb">
+      <div id="installSec" class="hidden"><div class="glabel">Install</div>
+        <button class="gbtn accent" id="installBtn" style="width:100%;justify-content:center;padding:13px;border-radius:14px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 21h14"/></svg>
+          Install MK as an app
+        </button>
+        <div class="hintbox" id="installHint" style="margin-top:10px">Add MK to your home screen for a full-screen, app-like experience that opens offline.</div>
+      </div>
+
       <div><div class="glabel">Appearance</div>
         <button class="navrow" id="openThemes">
           <span class="nv-sw" id="curThemeSw"></span>
@@ -1041,6 +1059,16 @@
         <label class="switch on" id="skipIntroTog"><span class="tog"></span><span>Show <b>Skip Intro</b> on movies &amp; episodes</span></label>
         <div class="f" style="margin-top:12px"><span class="ff">Skip length</span><input id="introLen" type="number" min="10" max="300" step="5" value="85" inputmode="numeric"> <span style="color:var(--muted);font-size:13px;align-self:center;padding-left:8px">seconds</span></div>
         <div class="hintbox" style="margin-top:10px">IPTV streams don't include intro markers, so <b>Skip Intro</b> can't auto-detect the exact spot — it does a fixed forward jump (default 85s) during the first couple of minutes of a movie or episode. Adjust the length to match what you watch; tap again if an intro runs long.</div>
+      </div>
+
+      <div><div class="glabel">External Player</div>
+        <div class="sortsel" style="margin:0"><select id="extPrefSel" style="width:100%">
+          <option value="ask">Ask every time</option>
+          <option value="vlc">Always open in VLC</option>
+          <option value="mx">Always open in MX Player (Android)</option>
+          <option value="iina">Always open in IINA (Mac)</option>
+        </select></div>
+        <div class="hintbox" style="margin-top:10px">MK plays everything in your chosen player, straight from your provider — nothing streams through this site. Pick a default here to skip the chooser and open playback with one tap. You can also tick <b>Remember my player</b> in the chooser.</div>
       </div>
 
       <div><div class="glabel">This Device</div>
@@ -1160,8 +1188,23 @@
       <button class="gbtn" id="extDl" style="justify-content:center;padding:14px;border-radius:16px">Download playlist for VLC (.m3u)</button>
       <button class="gbtn" id="extOpen" style="justify-content:center;padding:14px;border-radius:16px">Open link directly</button>
       <button class="gbtn" id="extCopy" style="justify-content:center;padding:14px;border-radius:16px">Copy stream URL</button>
+      <label class="switch" id="extRemember" style="margin-top:6px"><span class="tog"></span><span>Remember my player — open it with one tap next time</span></label>
       <div class="hintbox" id="extSteps" class="hidden"></div>
       <div class="hintbox" id="extUrl" style="word-break:break-all;font-size:11px;font-family:ui-monospace,monospace;color:var(--muted-2)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Playlist quick switcher -->
+<div class="scrim" id="plSwitchScrim">
+  <div class="modal" style="width:440px">
+    <div class="mh"><h2>Your Playlists</h2><button class="mx" id="plSwitchClose">✕</button></div>
+    <div class="mb">
+      <div class="pl" id="plSwitchList"></div>
+      <button class="gbtn accent" id="plSwitchAdd" style="width:100%;justify-content:center;padding:13px;border-radius:14px;margin-top:12px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="M12 5v14M5 12h14"/></svg>
+        Add another playlist
+      </button>
     </div>
   </div>
 </div>
@@ -1269,7 +1312,7 @@ const S={
   skipIntro:true, introLen:85, theme:'aurora', themeFx:true,
   metaProvider:'tmdb', tmdbKey:'', tvdbKey:'', tvdbPin:'', tvdbToken:'', tvdbTokenExp:0,
   osKey:'', osUser:'', osPass:'', osToken:'', subCues:[], subOn:false,
-  favorites:{}, recents:[], query:'', serverPref:{},
+  favorites:{}, recents:[], query:'', serverPref:{}, extPref:'ask',
   epg:{}, hls:null, mpegts:null, current:null, playQueue:[], queueIdx:0,
   mv:[null,null,null,null], mvEng:[null,null,null,null], mvActive:0, mvTarget:0
 };
@@ -1976,12 +2019,32 @@ function renderSection(kind){
 function renderSearch(){
   const main=$('#main');const q=S.query.toLowerCase();
   const hits=[...S.live,...S.movies,...S.series].filter(x=>x.name.toLowerCase().includes(q));
-  main.innerHTML=`<div class="secthead"><h1>Results for "${esc(S.query)}"</h1></div>`;
-  if(!hits.length){const c=document.createElement('div');c.className='center';c.innerHTML='<h2>No matches</h2><p>Try a different title or check your active playlist.</p>';main.appendChild(c);return;}
   const live=hits.filter(x=>x.kind==='live'),mov=hits.filter(x=>x.kind==='movie'),ser=hits.filter(x=>x.kind==='series');
-  const lR=rail('Live',live.slice(0,30),'live');if(lR)main.appendChild(lR);
-  const mR=rail('Movies',mov.slice(0,30),'movie');if(mR)main.appendChild(mR);
-  const sR=rail('Series',ser.slice(0,30),'series');if(sR)main.appendChild(sR);
+  main.innerHTML=`<div class="secthead"><h1>Results for “${esc(S.query)}”</h1></div><div class="catbar" id="srchFilter"></div><div id="srchBody"></div>`;
+  if(!hits.length){const c=document.createElement('div');c.className='center';c.innerHTML='<h2>No matches</h2><p>Try a different title, or switch playlist from the ☰ button.</p>';$('#srchBody').appendChild(c);return;}
+  const cb=$('#srchFilter'),body=$('#srchBody');
+  let f=S._srchF||'all';
+  const cnt={all:hits.length,live:live.length,movie:mov.length,series:ser.length};
+  if(f!=='all'&&!cnt[f])f='all';
+  function draw(){
+    body.innerHTML='';
+    if(f==='all'){
+      const lR=rail('Live',live.slice(0,40),'live');if(lR)body.appendChild(lR);
+      const mR=rail('Movies',mov.slice(0,40),'movie');if(mR)body.appendChild(mR);
+      const sR=rail('Series',ser.slice(0,40),'series');if(sR)body.appendChild(sR);
+    }else{
+      const arr=f==='live'?live:f==='movie'?mov:ser;
+      if(f==='live'){const g=document.createElement('div');g.className='lgrid';arr.slice(0,500).forEach(it=>g.appendChild(liveCard(it)));body.appendChild(g);}
+      else{const g=document.createElement('div');g.className='pgrid';arr.slice(0,500).forEach(it=>g.appendChild(posterCard(it,f==='movie'?'movie':'series')));body.appendChild(g);}
+    }
+  }
+  cb.innerHTML='';
+  [['all','All ('+cnt.all+')'],['live','Live ('+cnt.live+')'],['movie','Movies ('+cnt.movie+')'],['series','Series ('+cnt.series+')']]
+    .forEach(([val,label])=>{ if(val!=='all'&&!cnt[val])return;
+      const b=document.createElement('button');b.className='catchip'+(val===f?' active':'');b.textContent=label;
+      b.onclick=()=>{f=val;S._srchF=val;$$('.catchip',cb).forEach(x=>x.classList.remove('active'));b.classList.add('active');draw();};
+      cb.appendChild(b);});
+  draw();
 }
 
 function render(){
@@ -2016,7 +2079,7 @@ function openMovie(it,card){
     </div>`;
   if(backdrop)setBg(imgURL(backdrop));
   scrim.classList.add('show');
-  $('#sheetX').onclick=closeSheet; $('#sheetPlay').onclick=()=>{closeSheet();playItem(it,it.name,it.group,false,[it],0);};
+  $('#sheetX').onclick=closeSheet; $('#sheetPlay').onclick=()=>{closeSheet();addRecent(it);openExternal(it.url,it.name);};
   $('#sheetFav').onclick=()=>{toggleFav(it);$('#sheetFav').textContent=S.favorites[favKey(it)]?'★ In Favorites':'☆ Add to Favorites';};
   if(!overview&&hasMetaKey()){const yy=metaOf(it).year;metaSearch(it.name,'movie',yy).then(m=>{if(m&&m.yearOk){if(m.overview)$('#sheetOver').textContent=m.overview;if(m.backdrop){$('.shero .art',sheet).style.backgroundImage=`url('${m.backdrop}')`;setBg(m.backdrop);}}});}
 }
@@ -2041,7 +2104,7 @@ async function openSeries(it){
       const el=$('#eplist');eps.forEach((e,i)=>{const r=document.createElement('div');r.className='epitem';
         r.innerHTML=`<div class="epn">${esc(e.ep||i+1)}</div><div class="epi"><b>${esc(e.title)}</b><span>${e.info&&e.info.duration?esc(e.info.duration):''}</span></div>
           <div class="eppl"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg></div>`;
-        r.onclick=()=>{closeSheet();S.playSeries=it;const queue=eps.map(x=>({name:it.name+' · '+(x.title),url:x.url,group:it.name,kind:'series'}));playItem(queue[i],queue[i].name,it.name,false,queue,i);};
+        r.onclick=()=>{closeSheet();S.playSeries=it;addRecent(it);const queue=eps.map(x=>({name:it.name+' · '+(x.title),url:x.url,group:it.name,kind:'series'}));openExternal(queue[i].url,queue[i].name);};
         el.appendChild(r);});
     }
     drawEps();
@@ -2198,7 +2261,7 @@ $('#ccSearch').onclick=async()=>{
   }catch(e){res.innerHTML=`<div class="hintbox" style="text-align:center;padding:14px">${esc(e.message||'Search failed')}</div>`;}
 };
 
-function playLive(it){const list=visibleLiveQueue(it);playItem(it,it.name,nowProg(it.tvgId)?('Now: '+nowProg(it.tvgId).title):(it.group||''),true,list,Math.max(0,list.findIndex(x=>favKey(x)===favKey(it))));}
+function playLive(it){addRecent(it);openExternal(it.url,it.name);}
 function visibleLiveQueue(it){return S.live.filter(x=>x.group===it.group);}
 
 function playItem(it,name,sub,isLive,queue,idx){
@@ -2360,20 +2423,45 @@ function macHelp(){
   try{navigator.clipboard.writeText(link).then(done,done);}catch(e){const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();try{document.execCommand('copy');done();}catch(_){toast('Open Safari and go to '+link);}t.remove();}
 }
 function intentUrl(url,pkg,title){try{const u=new URL(url);const rest=u.host+u.pathname+u.search;return 'intent://'+rest+'#Intent;scheme='+u.protocol.replace(':','')+';package='+pkg+';type=video/*;S.title='+encodeURIComponent(title||'')+';end';}catch(e){return url;}}
+const extLabel=id=>id==='mx'?'MX Player':id==='iina'?'IINA':'VLC';
+function extPrefApplies(id){ if(id==='mx')return isAndroid; if(id==='iina')return isMac; if(id==='vlc')return true; return false; }
+/* Fire the deep-link / intent that hands the direct stream URL to a player app. */
+function launchPlayer(id){
+  const url=S._extUrl,title=S._extTitle;
+  if(id==='mx'){location.href=intentUrl(url,'com.mxtech.videoplayer.ad',title);return;}
+  if(id==='iina'){location.href='iina://weblink?url='+encodeURIComponent(url);return;}
+  // vlc
+  if(isIOS){location.href='vlc-x-callback://x-callback-url/stream?url='+encodeURIComponent(url);}
+  else if(isAndroid){location.href=intentUrl(url,'org.videolan.vlc',title);}
+  else{ try{location.href='vlc://'+url;}catch(e){} setTimeout(()=>toast('If VLC didn\u2019t open, use Download playlist or Copy URL'),1500); }
+}
+function setExtPref(id){S.extPref=id;Store.set('extPref',id);const sel=$('#extPrefSel');if(sel)sel.value=id;}
+/* Entry point: a saved default launches with one tap; otherwise show the chooser. */
 function openExternal(url,title){
   if(!url){toast('No stream URL');return;}
+  S._extUrl=url;S._extTitle=title||'Stream';
+  if(S.extPref&&S.extPref!=='ask'&&extPrefApplies(S.extPref)){
+    launchPlayer(S.extPref);
+    toastAction('Opening in '+extLabel(S.extPref)+' \u2014 tap to choose another app',openExtSheet);
+    return;
+  }
+  openExtSheet();
+}
+function openExtSheet(){
+  if(!S._extUrl){toast('No stream URL');return;}
   clearTimeout(idleT);$('#player').classList.remove('idle');
-  S._extUrl=url;S._extTitle=title||'Stream';$('#extUrl').textContent=url;
+  $('#extUrl').textContent=S._extUrl;
+  const rem=$('#extRemember');if(rem)rem.classList.remove('on');
   // tailor the options to the device
   const mx=$('#extMX'),vlc=$('#extVLC'),dl=$('#extDl'),steps=$('#extSteps'),hint=$('#extHint');
   mx.style.display=isAndroid?'':'none';                 // MX Player intent is Android-only
   const iina=$('#extIINA');if(iina)iina.style.display=isMac?'':'none'; // IINA registers iina:// on install
   dl.style.display=isDesktop?'':'none';                 // .m3u download makes sense on desktop
-  if(isAndroid){vlc.textContent='Open in VLC';steps.classList.add('hidden');hint.innerHTML='VLC and MX Player play <b>live TV, MKV, HEVC and Dolby</b> that browsers can\u2019t.';}
-  else if(isIOS){vlc.textContent='Open in VLC (iOS)';steps.classList.add('hidden');hint.innerHTML='VLC for Mobile plays formats Safari can\u2019t. If nothing opens, install VLC, or use <b>Copy stream URL</b> \u2192 VLC \u2192 Network Stream.';}
+  if(isAndroid){vlc.textContent='Open in VLC';steps.classList.add('hidden');hint.innerHTML='Plays straight from your provider \u2014 nothing streams through this site. VLC and MX Player also handle <b>MKV, HEVC and Dolby</b> that browsers can\u2019t.';}
+  else if(isIOS){vlc.textContent='Open in VLC (iOS)';steps.classList.add('hidden');hint.innerHTML='Plays directly from your provider \u2014 no proxy, no data through this site. If nothing opens, install VLC, or use <b>Copy stream URL</b> \u2192 VLC \u2192 Network Stream.';}
   else{ // desktop / TV: browsers can't launch VLC directly
     vlc.textContent='Open with vlc:// (if installed)';
-    hint.innerHTML='Browsers on computers/TVs can\u2019t force VLC open. Best options: <b>Download playlist</b> (opens in VLC if it\u2019s your default for .m3u), or <b>Copy stream URL</b> and paste it into VLC.';
+    hint.innerHTML='Plays directly from your provider (no proxy). Browsers on computers/TVs can\u2019t force VLC open \u2014 best options: <b>Download playlist</b> (opens in VLC if it\u2019s your default for .m3u), or <b>Copy stream URL</b> and paste it into VLC.';
     steps.classList.remove('hidden');
     steps.innerHTML='<b>In VLC:</b> '+(isMac?'File \u2192 Open Network\u2026':'Media \u2192 Open Network Stream\u2026')+' \u2192 paste the URL \u2192 Play.';
   }
@@ -2381,17 +2469,17 @@ function openExternal(url,title){
 }
 function closeExt(){$('#extScrim').classList.remove('show');markActive();}
 function vlcM3U(url,title){return '#EXTM3U\n#EXTINF:-1,'+(title||'Stream')+'\n'+url+'\n';}
+/* A player button was tapped: honor "remember", close the sheet, launch. */
+function extPick(id){
+  const rem=$('#extRemember');
+  if(rem&&rem.classList.contains('on')){setExtPref(id);toast(extLabel(id)+' is now your default \u2014 change it in Settings');}
+  closeExt();launchPlayer(id);
+}
+const _remTog=$('#extRemember');if(_remTog)_remTog.onclick=function(){this.classList.toggle('on');};
 $('#extClose').onclick=closeExt;
-$('#extMX').onclick=()=>{location.href=intentUrl(S._extUrl,'com.mxtech.videoplayer.ad',S._extTitle);};
-const _iinaBtn=$('#extIINA');if(_iinaBtn)_iinaBtn.onclick=()=>{location.href='iina://weblink?url='+encodeURIComponent(S._extUrl);};
-$('#extVLC').onclick=()=>{
-  if(isIOS){location.href='vlc-x-callback://x-callback-url/stream?url='+encodeURIComponent(S._extUrl);}
-  else if(isAndroid){location.href=intentUrl(S._extUrl,'org.videolan.vlc',S._extTitle);}
-  else{ // desktop: try the vlc:// scheme (works only if the user registered it); otherwise guide them
-    try{location.href='vlc://'+S._extUrl;}catch(e){}
-    setTimeout(()=>toast('If VLC didn\u2019t open, use Download playlist or Copy URL'),1500);
-  }
-};
+$('#extMX').onclick=()=>extPick('mx');
+const _iinaBtn=$('#extIINA');if(_iinaBtn)_iinaBtn.onclick=()=>extPick('iina');
+$('#extVLC').onclick=()=>extPick('vlc');
 $('#extDl').onclick=()=>{
   try{const blob=new Blob([vlcM3U(S._extUrl,S._extTitle)],{type:'audio/x-mpegurl'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -2400,9 +2488,46 @@ $('#extDl').onclick=()=>{
     toast('Saved .m3u — open it (VLC plays it if it\u2019s your default)');
   }catch(e){toast('Download failed — use Copy URL');}
 };
-$('#extOpen').onclick=()=>{window.open(S._extUrl,'_blank');};
-$('#extCopy').onclick=async()=>{try{await navigator.clipboard.writeText(S._extUrl);toast('Stream URL copied');}catch(e){const t=document.createElement('textarea');t.value=S._extUrl;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Stream URL copied');}catch(_){toast('Copy failed');}t.remove();}};
+$('#extOpen').onclick=()=>{window.open(S._extUrl,'_blank');};$('#extCopy').onclick=async()=>{try{await navigator.clipboard.writeText(S._extUrl);toast('Stream URL copied');}catch(e){const t=document.createElement('textarea');t.value=S._extUrl;document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Stream URL copied');}catch(_){toast('Copy failed');}t.remove();}};
 $('#pExt').onclick=()=>{if(S.current)openExternal(S.current.url,S.current.name);};
+
+/* ===== Multi-playlist quick switch ===== */
+function plKindLabel(pl){const t=pl.type;return t==='xc'?'Xtream Codes':t==='vod'?'VOD · Movies':'M3U / EPG';}
+function openPlSwitch(){
+  const list=$('#plSwitchList');list.innerHTML='';
+  const pls=(S.playlists||[]).filter(p=>p.id!=='demo');
+  if(!pls.length){list.innerHTML='<div class="hintbox">No playlists yet — add one to get started.</div>';}
+  pls.forEach(pl=>{
+    const active=pl.id===S.active;
+    const row=document.createElement('div');row.className='navrow';row.style.cursor='pointer';row.style.marginBottom='8px';
+    if(active)row.style.borderColor='var(--blue)';
+    row.innerHTML=`<span class="nv-sw" style="background:var(--blue-soft);display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:15px">${active?'▶':'≡'}</span>`+
+      `<span class="nv-tx"><b>${esc(pl.name||'Playlist')}</b><i>${plKindLabel(pl)}${active?' · Active now':''}</i></span>`;
+    const del=document.createElement('button');del.className='ic';del.style.marginLeft='auto';del.setAttribute('aria-label','Remove playlist');
+    del.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+    del.onclick=async e=>{e.stopPropagation();if(!confirm('Remove “'+(pl.name||'this playlist')+'” from this device?'))return;await removePlaylist(pl.id);openPlSwitch();};
+    row.appendChild(del);
+    row.onclick=()=>{closePlSwitch();if(!active)activate(pl);};
+    list.appendChild(row);
+  });
+  $('#plSwitchScrim').classList.add('show');
+}
+function closePlSwitch(){$('#plSwitchScrim').classList.remove('show');}
+async function removePlaylist(id){
+  S.playlists=S.playlists.filter(p=>p.id!==id);
+  await Store.set('playlists',S.playlists);
+  try{await Store.del('pltext:'+id);}catch(e){}
+  if(S.active===id){
+    const next=S.playlists.find(p=>p.id!=='demo');
+    if(next){activate(next);}
+    else{S.active=null;S.live=[];S.movies=[];S.series=[];S.liveCats={};S.movieCats={};S.seriesCats={};try{Store.del('lastActive');}catch(e){}render();}
+    toast('Playlist removed');
+  }else toast('Playlist removed');
+}
+$('#plBtn').onclick=openPlSwitch;
+$('#plSwitchClose').onclick=closePlSwitch;
+$('#plSwitchAdd').onclick=()=>{closePlSwitch();openAdd();};
+$('#plSwitchScrim').addEventListener('mousedown',e=>{if(e.target===$('#plSwitchScrim'))closePlSwitch();});
 window.openExternal=openExternal;
 
 /* ===== switch server / mirror while playing ===== */
@@ -2641,6 +2766,7 @@ function showError(title,msg,extra){$('#main').innerHTML=`<div class="center"><d
 
 async function activate(pl){
   S.active=pl.id;S.tab='home';S.query='';$('#search').value='';
+  if(pl.id&&pl.id!=='demo')Store.set('lastActive',pl.id);
   S.live=[];S.movies=[];S.series=[];S.liveCats={};S.movieCats={};S.seriesCats={};
   try{
     if(pl.type==='xc'){ await loadXC(pl); }
@@ -3143,6 +3269,7 @@ $('#themeClose').onclick=()=>$('#themeScrim').classList.remove('show');
 $('#themeDone').onclick=()=>$('#themeScrim').classList.remove('show');
 const fxTog=$('#themeFxTog');fxTog.onclick=()=>{S.themeFx=!S.themeFx;fxTog.classList.toggle('on',S.themeFx);document.documentElement.classList.toggle('nofx',!S.themeFx);Store.set('themeFx',S.themeFx);};
 $('#introLen').onchange=e=>{let v=parseInt(e.target.value,10);if(!isFinite(v))v=85;v=Math.max(10,Math.min(300,v));S.introLen=v;e.target.value=v;Store.set('introLen',v);};
+{const eps=$('#extPrefSel');if(eps)eps.onchange=()=>{S.extPref=eps.value;Store.set('extPref',eps.value);toast(eps.value==='ask'?'MK will ask which player each time':(extLabel(eps.value)+' is now your default player'));};}
 /* proxy mode switch */
 const PROXY_HINTS={
   auto:'<b>Automatic</b> — tries your server directly, then a relay on your own domain (the proxy function, if you deployed it — private, works for logins), then public relays for non-login requests. Zero setup once the function is on your site.',
@@ -3272,7 +3399,32 @@ document.addEventListener('keydown',e=>{const t=(e.target.tagName||'').toLowerCa
 });
 
 /* toast */
-let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2800);}
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.onclick=null;e.style.cursor='';e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2800);}
+/* A tappable toast — used for one-tap play ("tap to choose another app"). */
+function toastAction(m,fn){const e=$('#toast');e.textContent=m;e.style.cursor='pointer';e.onclick=()=>{e.classList.remove('show');e.onclick=null;e.style.cursor='';if(fn)fn();};e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>{e.classList.remove('show');e.onclick=null;e.style.cursor='';},5200);}
+
+/* ===== PWA: installable app + offline shell ===== */
+(function(){
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+  }
+  const standalone=window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  let deferred=null;
+  const sec=()=>$('#installSec'),btn=()=>$('#installBtn'),hint=()=>$('#installHint');
+  function showSec(){const s=sec();if(s)s.classList.remove('hidden');}
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showSec();});
+  window.addEventListener('appinstalled',()=>{deferred=null;const s=sec();if(s)s.classList.add('hidden');toast('MK installed — find it on your home screen');});
+  document.addEventListener('DOMContentLoaded',()=>{
+    const b=btn();if(b)b.onclick=async()=>{
+      if(deferred){deferred.prompt();try{await deferred.userChoice;}catch(e){}deferred=null;const s=sec();if(s)s.classList.add('hidden');return;}
+      // iOS Safari has no install prompt — guide the user through Share → Add to Home Screen.
+      if(isIOS){const h=hint();if(h)h.innerHTML='On iPhone/iPad: tap the <b>Share</b> button in Safari, then <b>Add to Home Screen</b>.';}
+      else{const h=hint();if(h)h.innerHTML='Use your browser menu → <b>Install app</b> / <b>Add to Home screen</b>.';}
+    };
+    // iOS never fires beforeinstallprompt — surface the section with manual steps.
+    if(isIOS&&!standalone)showSec();
+  });
+})();
 
 /* ===== boot ===== */
 (async function(){
@@ -3280,6 +3432,7 @@ let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('sh
   S.favorites=await Store.get('favorites',{});
   S.recents=await Store.get('recents',[]);
   S.serverPref=await Store.get('serverPref',{});
+  S.extPref=await Store.get('extPref','ask');const _eps=$('#extPrefSel');if(_eps)_eps.value=S.extPref;
   try{const ds=await Store.get('deviceSyncUrl','');if(ds)DEV_API=ds;}catch(e){}
   S.engine=await Store.get('engine','auto');
   S.metaProvider=await Store.get('metaProvider','tmdb');
