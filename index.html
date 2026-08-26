@@ -6,41 +6,41 @@
 <title>MK — IPTV</title>
 <!-- PWA / installable app -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#06070A">
+<meta name="theme-color" content="#141414">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MK">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<!-- MK Cinematic type system: Sora (display) + Inter (text) -->
+<!-- MK type system: Inter (clean grotesque, Netflix-style) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* ===== MK CINEMATIC — dark-first premium, champagne-gold accent ===== */
-    --ink:#06070A;               /* cinematic black */
-    --surface:#11141A;           /* card surface */
-    --elev:#181C23;              /* elevated surface */
-    --glass:rgba(17,20,26,.72);
-    --glass-2:rgba(255,255,255,.045);
-    --glass-3:rgba(255,255,255,.09);
-    --hair:rgba(255,255,255,.075);
-    --hair-bright:rgba(214,166,74,.34);   /* gold-tinted hairline */
-    --text:#F5F5F2;
-    --muted:#9AA0AA;
-    --muted-2:rgba(154,160,170,.6);
-    --blue:#D6A64A;              /* champagne gold accent (kept var name for cascade) */
-    --blue-soft:rgba(214,166,74,.15);
-    --gold-dark:#A97927;
-    --amber:#D6A64A;
-    --live:#D94B4B;
-    --radius:16px;
-    --radius-sm:14px;
-    --blur:saturate(160%) blur(26px);
-    --shadow:0 24px 60px rgba(0,0,0,.6);
-    --glow:rgba(214,166,74,.12);
+    /* ===== MK — Netflix-style: black surfaces, red accent, white Play ===== */
+    --ink:#141414;               /* Netflix charcoal-black */
+    --surface:#181818;           /* card surface */
+    --elev:#202020;              /* elevated surface */
+    --glass:rgba(20,20,20,.86);
+    --glass-2:rgba(255,255,255,.06);
+    --glass-3:rgba(255,255,255,.14);
+    --hair:rgba(255,255,255,.10);
+    --hair-bright:rgba(255,255,255,.28);
+    --text:#FFFFFF;
+    --muted:#B3B3B3;             /* Netflix grey */
+    --muted-2:rgba(179,179,179,.62);
+    --blue:#E50914;              /* Netflix red accent (kept var name for cascade) */
+    --blue-soft:rgba(229,9,20,.18);
+    --gold-dark:#B20710;
+    --amber:#F5C518;             /* IMDb-gold star */
+    --live:#E50914;
+    --radius:8px;
+    --radius-sm:6px;
+    --blur:saturate(140%) blur(22px);
+    --shadow:0 24px 60px rgba(0,0,0,.7);
+    --glow:rgba(229,9,20,.14);
   }
   /* ===== Themes (each device picks its own) ===== */
   html[data-theme="superman"]{
@@ -78,9 +78,10 @@
     font-family:'Inter',-apple-system,"SF Pro Text",system-ui,"Segoe UI",sans-serif;
     -webkit-font-smoothing:antialiased;letter-spacing:-0.01em;
   }
-  /* Sora for display / headings — the cinematic voice */
+  /* Clean bold sans for headings — Netflix-style */
   .brand b,h1,h2,h3,.rh h2,.secthead h1,.scard .si h2,.mh h2,.shero h1,.sinfo h1,
-  .ott-hero h1,.hero h1,.codebig{font-family:'Sora','Inter',system-ui,sans-serif;letter-spacing:-0.02em}
+  .ott-hero h1,.hero h1,.codebig{font-family:'Inter',system-ui,sans-serif;letter-spacing:-0.02em;font-weight:800}
+  .brand b{color:var(--blue);letter-spacing:.5px}  /* red Netflix-style wordmark */
   button{font-family:inherit;color:inherit;border:none;background:none;cursor:pointer}
   input,select{font-family:inherit}
   ::selection{background:var(--blue);color:#fff}
@@ -211,10 +212,9 @@
   .gbtn:hover{background:var(--glass-3)}
   .gbtn:active{transform:scale(.97)}
   .gbtn svg{width:16px;height:16px}
-  .gbtn.accent{background:linear-gradient(180deg,#E4BC65,#D6A64A);border-color:transparent;color:#0b0b0c;font-weight:700;
-    box-shadow:0 6px 20px rgba(214,166,74,.28)}
-  .gbtn.accent:hover{background:linear-gradient(180deg,#EEC978,#DDB055)}
-  .gbtn.accent svg{color:#0b0b0c}
+  .gbtn.accent{background:#fff;border-color:transparent;color:#000;font-weight:700}
+  .gbtn.accent:hover{background:rgba(255,255,255,.78)}
+  .gbtn.accent svg{color:#000}
   .ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:var(--glass-2);
     border:1px solid var(--hair);box-shadow:inset 0 1px 0 var(--hair-bright);flex:0 0 auto}
   .ic:hover{background:var(--glass-3)}
@@ -291,7 +291,7 @@
   .sbtn{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--hair-bright);
     background:rgba(10,12,18,.5);backdrop-filter:blur(10px);color:#fff;cursor:pointer;transition:transform .12s}
   .sbtn:active{transform:scale(.92)}
-  .sbtn.play{background:linear-gradient(180deg,#E4BC65,#D6A64A);color:#0b0b0c;box-shadow:0 8px 26px rgba(214,166,74,.4)}
+  .sbtn.play{background:#fff;color:#000;box-shadow:0 8px 26px rgba(0,0,0,.45)}
   .sbtn svg{width:24px;height:24px}
   @media (min-width:760px){.scard{flex-basis:62%}}
   @media (min-width:1100px){.scard{flex-basis:46%}}
@@ -572,10 +572,10 @@
   .sheet .sbody .sover{font-size:14.5px;line-height:1.65;color:rgba(245,245,242,.8);margin-bottom:18px}
   .sheet .splay{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
   .sheet .splay .gbtn{padding:13px 24px;font-size:15px;border-radius:14px}
-  .sheet .splay .play{background:linear-gradient(180deg,#E4BC65,#D6A64A);color:#0b0b0c;font-weight:700;box-shadow:0 6px 20px rgba(214,166,74,.3)}
+  .sheet .splay .play{background:#fff;color:#000;font-weight:700}
   .seasons{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 12px}
   .seasonchip{font-size:13px;padding:7px 14px;border-radius:14px;background:var(--glass-2);border:1px solid var(--hair);color:var(--muted)}
-  .seasonchip.active{background:linear-gradient(180deg,#E4BC65,#D6A64A);color:#0b0b0c;font-weight:700;border-color:transparent}
+  .seasonchip.active{background:#fff;color:#000;font-weight:700;border-color:transparent}
   .eplist{display:flex;flex-direction:column;gap:8px}
   .epitem{display:flex;align-items:center;gap:14px;padding:12px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid var(--hair);cursor:pointer;transition:.15s}
   .epitem:hover{background:var(--glass-3)}
@@ -589,7 +589,7 @@
   .epitem .epthumb .epn2{position:absolute;top:4px;left:5px;font-size:11px;font-weight:800;background:rgba(0,0,0,.62);padding:1px 6px;border-radius:6px}
   @media (max-width:560px){.epitem .epthumb{width:76px;height:44px}}
   .sheet .morelike{margin-top:24px}
-  .sheet .morelike h2{font-size:17px;font-weight:700;margin-bottom:12px;font-family:'Sora','Inter',sans-serif}
+  .sheet .morelike h2{font-size:17px;font-weight:700;margin-bottom:12px;font-family:'Inter',system-ui,sans-serif}
   .sheet .morelike .mlrow{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
   .sheet .morelike .mlrow::-webkit-scrollbar{display:none}
 
@@ -922,7 +922,7 @@
   .livehero .lhbody{position:absolute;left:26px;right:26px;bottom:22px;z-index:2;display:flex;flex-direction:column;gap:8px}
   .livehero .lhlogo{width:76px;height:56px;border-radius:12px;background:rgba(255,255,255,.94);display:grid;place-items:center;overflow:hidden;margin-bottom:4px;box-shadow:0 6px 18px rgba(0,0,0,.4)}
   .livehero .lhlogo img{max-width:80%;max-height:74%;object-fit:contain}
-  .livehero .lhtitle{font-family:'Sora','Inter',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.7)}
+  .livehero .lhtitle{font-family:'Inter',system-ui,sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.7)}
   .livehero .lhnow{font-size:14px;color:rgba(245,245,242,.82);font-weight:600}
   .livehero .lhbtns{display:flex;gap:12px;margin-top:12px}
   .livehero .lhbtns .gbtn{padding:12px 22px;border-radius:14px;font-size:15px}
@@ -947,7 +947,7 @@
     background:var(--cg,linear-gradient(135deg,#181C23,#0d0f14));display:flex;flex-direction:column;justify-content:flex-end;padding:14px;transition:transform .2s,border-color .2s}
   .livecat:hover{transform:translateY(-4px);border-color:var(--hair-bright)}
   .livecat::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,7,10,.82),transparent 70%)}
-  .livecat .lcname{position:relative;z-index:1;font-family:'Sora','Inter',sans-serif;font-weight:800;font-size:15px;letter-spacing:.3px;text-transform:uppercase}
+  .livecat .lcname{position:relative;z-index:1;font-family:'Inter',system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.3px;text-transform:uppercase}
   .livecat .lccount{position:relative;z-index:1;font-size:11.5px;color:rgba(245,245,242,.7);margin-top:2px}
 
   /* ============ Home — full-width cinematic featured hero ============ */
@@ -958,7 +958,7 @@
   .homehero .hh-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,10,.96) 0%,rgba(6,7,10,.62) 42%,rgba(6,7,10,.12) 78%),linear-gradient(0deg,rgba(6,7,10,.92),transparent 55%)}
   .homehero .hh-body{position:absolute;left:44px;bottom:40px;right:44px;max-width:640px;z-index:2}
   .homehero .hh-tag{font-size:12px;font-weight:800;letter-spacing:2.6px;color:var(--blue);text-transform:uppercase;margin-bottom:12px}
-  .homehero .hh-title{font-family:'Sora','Inter',sans-serif;font-size:clamp(30px,5.4vw,58px);font-weight:800;line-height:1.03;letter-spacing:-.02em;text-shadow:0 3px 26px rgba(0,0,0,.7)}
+  .homehero .hh-title{font-family:'Inter',system-ui,sans-serif;font-size:clamp(30px,5.4vw,58px);font-weight:800;line-height:1.03;letter-spacing:-.02em;text-shadow:0 3px 26px rgba(0,0,0,.7)}
   .homehero .hh-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--muted)}
   .homehero .hh-meta .star{color:var(--amber);font-weight:800}
   .homehero .hh-meta .dot{opacity:.45}
@@ -1879,13 +1879,13 @@ function homeHero(it){
       <div class="hh-meta">${bits.join('')}</div>
       <div class="hh-over" id="hhOver">${esc(it.overview||'')}</div>
       <div class="hh-btns">
-        <button class="gbtn accent" id="hhPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Play Now</button>
-        <button class="gbtn" id="hhList">${S.favorites[favKey(it)]?'★ My List':'＋ My List'}</button>
+        <button class="gbtn accent" id="hhPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg>Play</button>
+        <button class="gbtn" id="hhInfo" style="background:rgba(109,109,110,.55);color:#fff;border-color:transparent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="19" height="19"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>More Info</button>
       </div>
     </div>`;
   wrap.onclick=(e)=>{if(e.target.closest('.gbtn'))return;cardOpen(it);};
   wrap.querySelector('#hhPlay').onclick=(e)=>{e.stopPropagation();if(it.kind==='movie'){addRecent(it);openExternal(it.url,it.name);}else{cardOpen(it);}};
-  wrap.querySelector('#hhList').onclick=(e)=>{e.stopPropagation();toggleFav(it);wrap.querySelector('#hhList').textContent=S.favorites[favKey(it)]?'★ My List':'＋ My List';};
+  wrap.querySelector('#hhInfo').onclick=(e)=>{e.stopPropagation();cardOpen(it);};
   if(hasMetaKey()&&(it.kind==='movie'||it.kind==='series')){metaSearch(it.name,it.kind==='series'?'tv':'movie',m.year).then(md=>{if(!md||!md.yearOk)return;
     if(md.backdrop)wrap.querySelector('.hh-bg').style.backgroundImage=`url('${md.backdrop}')`;
     if(md.overview&&!it.overview){const o=wrap.querySelector('#hhOver');if(o)o.textContent=md.overview;}
@@ -2339,7 +2339,7 @@ function openMovie(it,card){
         </div></div></div>
     <div class="sbody">
       <div class="splay">
-        <button class="gbtn play" id="sheetPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Watch Now</button>
+        <button class="gbtn play" id="sheetPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Play</button>
         <button class="gbtn" id="sheetFav">${S.favorites[favKey(it)]?'★ In My List':'＋ My List'}</button>
         <button class="gbtn" id="sheetInfo" title="Open in app" style="padding:13px;border-radius:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 3h7v7M21 3l-9 9"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg></button>
       </div>
