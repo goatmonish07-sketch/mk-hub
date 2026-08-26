@@ -949,6 +949,23 @@
   .livecat::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,7,10,.82),transparent 70%)}
   .livecat .lcname{position:relative;z-index:1;font-family:'Sora','Inter',sans-serif;font-weight:800;font-size:15px;letter-spacing:.3px;text-transform:uppercase}
   .livecat .lccount{position:relative;z-index:1;font-size:11.5px;color:rgba(245,245,242,.7);margin-top:2px}
+
+  /* ============ Home — full-width cinematic featured hero ============ */
+  .homehero{position:relative;margin:16px 40px 4px;border-radius:24px;overflow:hidden;height:min(60vh,540px);
+    background:var(--elev);border:1px solid var(--hair);box-shadow:0 30px 70px rgba(0,0,0,.55);cursor:pointer}
+  .homehero .hh-bg{position:absolute;inset:0;background-size:cover;background-position:center 20%;transition:transform 8s ease}
+  .homehero:hover .hh-bg{transform:scale(1.05)}
+  .homehero .hh-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,10,.96) 0%,rgba(6,7,10,.62) 42%,rgba(6,7,10,.12) 78%),linear-gradient(0deg,rgba(6,7,10,.92),transparent 55%)}
+  .homehero .hh-body{position:absolute;left:44px;bottom:40px;right:44px;max-width:640px;z-index:2}
+  .homehero .hh-tag{font-size:12px;font-weight:800;letter-spacing:2.6px;color:var(--blue);text-transform:uppercase;margin-bottom:12px}
+  .homehero .hh-title{font-family:'Sora','Inter',sans-serif;font-size:clamp(30px,5.4vw,58px);font-weight:800;line-height:1.03;letter-spacing:-.02em;text-shadow:0 3px 26px rgba(0,0,0,.7)}
+  .homehero .hh-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--muted)}
+  .homehero .hh-meta .star{color:var(--amber);font-weight:800}
+  .homehero .hh-meta .dot{opacity:.45}
+  .homehero .hh-over{margin-top:14px;font-size:14.5px;line-height:1.6;color:rgba(245,245,242,.78);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .homehero .hh-btns{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .homehero .hh-btns .gbtn{padding:14px 26px;font-size:15px;border-radius:14px}
+  @media (max-width:900px){.homehero{margin:12px 18px 2px;height:min(52vh,440px)}.homehero .hh-body{left:22px;right:22px;bottom:24px}.homehero .hh-over{display:none}.homehero .hh-btns{margin-top:18px}.homehero .hh-btns .gbtn{padding:13px 22px}}
 </style>
 </head>
 <body>
@@ -1846,6 +1863,35 @@ function collectionRails(main){
     if(r)main.appendChild(r);
   });
 }
+function homeHero(it){
+  if(!it)return null;
+  const m=metaOf(it);const rating=parseFloat(it.rating)||0;
+  const art=it.backdrop||it.logo||'';
+  const wrap=document.createElement('div');wrap.className='homehero';wrap.tabIndex=0;
+  const bits=[];
+  if(rating)bits.push(`<span class="star">★ ${rating.toFixed(1)}</span>`);
+  [m.year,it.group,m.lang].filter(Boolean).forEach((x)=>{bits.push((bits.length?'<span class="dot">·</span>':'')+'<span>'+esc(x)+'</span>');});
+  wrap.innerHTML=`<div class="hh-bg" style="${art?`background-image:url('${esc(imgURL(art))}')`:''}"></div>
+    <div class="hh-grad"></div>
+    <div class="hh-body">
+      <div class="hh-tag">Featured</div>
+      <div class="hh-title">${esc(cleanName(it))}</div>
+      <div class="hh-meta">${bits.join('')}</div>
+      <div class="hh-over" id="hhOver">${esc(it.overview||'')}</div>
+      <div class="hh-btns">
+        <button class="gbtn accent" id="hhPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Play Now</button>
+        <button class="gbtn" id="hhList">${S.favorites[favKey(it)]?'★ My List':'＋ My List'}</button>
+      </div>
+    </div>`;
+  wrap.onclick=(e)=>{if(e.target.closest('.gbtn'))return;cardOpen(it);};
+  wrap.querySelector('#hhPlay').onclick=(e)=>{e.stopPropagation();if(it.kind==='movie'){addRecent(it);openExternal(it.url,it.name);}else{cardOpen(it);}};
+  wrap.querySelector('#hhList').onclick=(e)=>{e.stopPropagation();toggleFav(it);wrap.querySelector('#hhList').textContent=S.favorites[favKey(it)]?'★ My List':'＋ My List';};
+  if(hasMetaKey()&&(it.kind==='movie'||it.kind==='series')){metaSearch(it.name,it.kind==='series'?'tv':'movie',m.year).then(md=>{if(!md||!md.yearOk)return;
+    if(md.backdrop)wrap.querySelector('.hh-bg').style.backgroundImage=`url('${md.backdrop}')`;
+    if(md.overview&&!it.overview){const o=wrap.querySelector('#hhOver');if(o)o.textContent=md.overview;}
+  });}
+  return wrap;
+}
 function spotlight(items){
   if(!items.length)return null;
   const wrap=document.createElement('div');wrap.className='spot';
@@ -2020,9 +2066,9 @@ function renderHome(){
     const base=recent.length>=10?recent:arr;
     return [...base].sort((a,b)=>rateOf(b)-rateOf(a)||(b.added||0)-(a.added||0)).slice(0,10);
   }
-  // spotlight carousel (big rounded cards) at the very top
+  // full-width cinematic featured hero at the very top (mockup layout)
   const spotItems=trendingSet([...S.movies,...S.series]);
-  const sp=spotlight(spotItems);if(sp)main.appendChild(sp);
+  const hero=homeHero(spotItems[0]);if(hero)main.appendChild(hero);
   // compact library strip
   const strip=document.createElement('div');strip.className='homestrip';
   strip.textContent=`${S.movies.length.toLocaleString()} movies · ${S.series.length.toLocaleString()} series · ${S.live.length.toLocaleString()} live`;
