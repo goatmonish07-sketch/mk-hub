@@ -950,22 +950,28 @@
   .livecat .lcname{position:relative;z-index:1;font-family:'Inter',system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:.3px;text-transform:uppercase}
   .livecat .lccount{position:relative;z-index:1;font-size:11.5px;color:rgba(245,245,242,.7);margin-top:2px}
 
-  /* ============ Home — full-width cinematic featured hero ============ */
-  .homehero{position:relative;margin:16px 40px 4px;border-radius:24px;overflow:hidden;height:min(60vh,540px);
-    background:var(--elev);border:1px solid var(--hair);box-shadow:0 30px 70px rgba(0,0,0,.55);cursor:pointer}
-  .homehero .hh-bg{position:absolute;inset:0;background-size:cover;background-position:center 20%;transition:transform 8s ease}
-  .homehero:hover .hh-bg{transform:scale(1.05)}
-  .homehero .hh-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,10,.96) 0%,rgba(6,7,10,.62) 42%,rgba(6,7,10,.12) 78%),linear-gradient(0deg,rgba(6,7,10,.92),transparent 55%)}
-  .homehero .hh-body{position:absolute;left:44px;bottom:40px;right:44px;max-width:640px;z-index:2}
-  .homehero .hh-tag{font-size:12px;font-weight:800;letter-spacing:2.6px;color:var(--blue);text-transform:uppercase;margin-bottom:12px}
-  .homehero .hh-title{font-family:'Inter',system-ui,sans-serif;font-size:clamp(30px,5.4vw,58px);font-weight:800;line-height:1.03;letter-spacing:-.02em;text-shadow:0 3px 26px rgba(0,0,0,.7)}
-  .homehero .hh-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--muted)}
-  .homehero .hh-meta .star{color:var(--amber);font-weight:800}
-  .homehero .hh-meta .dot{opacity:.45}
-  .homehero .hh-over{margin-top:14px;font-size:14.5px;line-height:1.6;color:rgba(245,245,242,.78);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .homehero .hh-btns{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-  .homehero .hh-btns .gbtn{padding:14px 26px;font-size:15px;border-radius:14px}
-  @media (max-width:900px){.homehero{margin:12px 18px 2px;height:min(52vh,440px)}.homehero .hh-body{left:22px;right:22px;bottom:24px}.homehero .hh-over{display:none}.homehero .hh-btns{margin-top:18px}.homehero .hh-btns .gbtn{padding:13px 22px}}
+  /* ============ Home — featured hero SLIDER ============ */
+  .heroslider{position:relative;margin:16px 40px 4px;border-radius:24px;overflow:hidden;height:min(60vh,540px);
+    background:var(--elev);border:1px solid var(--hair);box-shadow:0 30px 70px rgba(0,0,0,.55)}
+  .hs-track{position:absolute;inset:0}
+  .hs-slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .7s ease;cursor:pointer}
+  .hs-slide.active{opacity:1;pointer-events:auto}
+  .hs-slide .hh-bg{position:absolute;inset:0;background-size:cover;background-position:center 18%;transform:scale(1);transition:transform 7s ease}
+  .hs-slide.active .hh-bg{transform:scale(1.08)}
+  .hs-slide .hh-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,20,20,.96) 0%,rgba(20,20,20,.62) 42%,rgba(20,20,20,.12) 78%),linear-gradient(0deg,rgba(20,20,20,.94),transparent 55%)}
+  .hs-slide .hh-body{position:absolute;left:44px;bottom:40px;right:44px;max-width:640px;z-index:2}
+  .hs-slide .hh-tag{font-size:12px;font-weight:800;letter-spacing:2.6px;color:var(--blue);text-transform:uppercase;margin-bottom:12px}
+  .hs-slide .hh-title{font-family:'Inter',system-ui,sans-serif;font-size:clamp(30px,5.4vw,58px);font-weight:800;line-height:1.03;letter-spacing:-.02em;text-shadow:0 3px 26px rgba(0,0,0,.7)}
+  .hs-slide .hh-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--muted)}
+  .hs-slide .hh-meta .star{color:var(--amber);font-weight:800}
+  .hs-slide .hh-meta .dot{opacity:.45}
+  .hs-slide .hh-over{margin-top:14px;font-size:14.5px;line-height:1.6;color:rgba(245,245,242,.78);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .hs-slide .hh-btns{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .hs-slide .hh-btns .gbtn{padding:14px 26px;font-size:15px;border-radius:8px}
+  .hs-dots{position:absolute;right:22px;bottom:20px;display:flex;gap:8px;z-index:6}
+  .hs-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.34);border:none;padding:0;cursor:pointer;transition:width .25s,background .25s}
+  .hs-dot.active{background:#fff;width:22px;border-radius:4px}
+  @media (max-width:900px){.heroslider{margin:12px 18px 2px;height:min(54vh,460px)}.hs-slide .hh-body{left:22px;right:22px;bottom:24px}.hs-slide .hh-over{display:none}.hs-slide .hh-btns{margin-top:18px}.hs-slide .hh-btns .gbtn{padding:13px 22px}.hs-dots{right:16px;bottom:14px}}
 </style>
 </head>
 <body>
@@ -1863,34 +1869,59 @@ function collectionRails(main){
     if(r)main.appendChild(r);
   });
 }
-function homeHero(it){
-  if(!it)return null;
+/* one slide of the featured hero slider */
+function buildHeroSlide(it){
   const m=metaOf(it);const rating=parseFloat(it.rating)||0;
   const art=it.backdrop||it.logo||'';
-  const wrap=document.createElement('div');wrap.className='homehero';wrap.tabIndex=0;
+  const slide=document.createElement('div');slide.className='hs-slide';slide.tabIndex=0;
   const bits=[];
   if(rating)bits.push(`<span class="star">★ ${rating.toFixed(1)}</span>`);
   [m.year,it.group,m.lang].filter(Boolean).forEach((x)=>{bits.push((bits.length?'<span class="dot">·</span>':'')+'<span>'+esc(x)+'</span>');});
-  wrap.innerHTML=`<div class="hh-bg" style="${art?`background-image:url('${esc(imgURL(art))}')`:''}"></div>
+  slide.innerHTML=`<div class="hh-bg" style="${art?`background-image:url('${esc(imgURL(art))}')`:''}"></div>
     <div class="hh-grad"></div>
     <div class="hh-body">
       <div class="hh-tag">Featured</div>
       <div class="hh-title">${esc(cleanName(it))}</div>
       <div class="hh-meta">${bits.join('')}</div>
-      <div class="hh-over" id="hhOver">${esc(it.overview||'')}</div>
+      <div class="hh-over">${esc(it.overview||'')}</div>
       <div class="hh-btns">
-        <button class="gbtn accent" id="hhPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg>Play</button>
-        <button class="gbtn" id="hhInfo" style="background:rgba(109,109,110,.55);color:#fff;border-color:transparent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="19" height="19"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>More Info</button>
+        <button class="gbtn accent hh-play"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg>Play</button>
+        <button class="gbtn hh-info" style="background:rgba(109,109,110,.55);color:#fff;border-color:transparent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="19" height="19"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>More Info</button>
       </div>
     </div>`;
-  wrap.onclick=(e)=>{if(e.target.closest('.gbtn'))return;cardOpen(it);};
-  wrap.querySelector('#hhPlay').onclick=(e)=>{e.stopPropagation();if(it.kind==='movie'){addRecent(it);openExternal(it.url,it.name);}else{cardOpen(it);}};
-  wrap.querySelector('#hhInfo').onclick=(e)=>{e.stopPropagation();cardOpen(it);};
+  slide.onclick=(e)=>{if(e.target.closest('.gbtn'))return;cardOpen(it);};
+  slide.querySelector('.hh-play').onclick=(e)=>{e.stopPropagation();if(it.kind==='movie'){addRecent(it);openExternal(it.url,it.name);}else{cardOpen(it);}};
+  slide.querySelector('.hh-info').onclick=(e)=>{e.stopPropagation();cardOpen(it);};
   if(hasMetaKey()&&(it.kind==='movie'||it.kind==='series')){metaSearch(it.name,it.kind==='series'?'tv':'movie',m.year).then(md=>{if(!md||!md.yearOk)return;
-    if(md.backdrop)wrap.querySelector('.hh-bg').style.backgroundImage=`url('${md.backdrop}')`;
-    if(md.overview&&!it.overview){const o=wrap.querySelector('#hhOver');if(o)o.textContent=md.overview;}
+    if(md.backdrop)slide.querySelector('.hh-bg').style.backgroundImage=`url('${md.backdrop}')`;
+    if(md.overview&&!it.overview){const o=slide.querySelector('.hh-over');if(o)o.textContent=md.overview;}
   });}
-  return wrap;
+  return slide;
+}
+let _heroTimer=null;
+/* auto-sliding featured hero (fade + dots + swipe) */
+function homeHeroSlider(items){
+  items=(items||[]).filter(Boolean).slice(0,6);
+  if(!items.length)return null;
+  clearInterval(_heroTimer);
+  const box=document.createElement('div');box.className='heroslider';
+  const track=document.createElement('div');track.className='hs-track';box.appendChild(track);
+  items.forEach((it,i)=>{const s=buildHeroSlide(it);if(i===0)s.classList.add('active');track.appendChild(s);});
+  const slides=[...track.children];
+  let cur=0;
+  const dots=document.createElement('div');dots.className='hs-dots';
+  slides.forEach((_,i)=>{const d=document.createElement('button');d.className='hs-dot'+(i===0?' active':'');d.setAttribute('aria-label','Slide '+(i+1));d.onclick=()=>go(i,true);dots.appendChild(d);});
+  const dotEls=[...dots.children];box.appendChild(dots);
+  function go(i,manual){cur=(i+slides.length)%slides.length;
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    dotEls.forEach((d,k)=>d.classList.toggle('active',k===cur));
+    if(manual)restart();}
+  function restart(){clearInterval(_heroTimer);if(_reduceMotion||slides.length<2)return;
+    _heroTimer=setInterval(()=>{if(!document.body.contains(box)){clearInterval(_heroTimer);return;}if(box.matches(':hover'))return;go(cur+1);},6500);}
+  restart();
+  let sx=0;box.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+  box.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45)go(cur+(dx<0?1:-1),true);},{passive:true});
+  return box;
 }
 function spotlight(items){
   if(!items.length)return null;
@@ -2066,9 +2097,9 @@ function renderHome(){
     const base=recent.length>=10?recent:arr;
     return [...base].sort((a,b)=>rateOf(b)-rateOf(a)||(b.added||0)-(a.added||0)).slice(0,10);
   }
-  // full-width cinematic featured hero at the very top (mockup layout)
+  // full-width featured hero SLIDER at the very top (auto-sliding cards)
   const spotItems=trendingSet([...S.movies,...S.series]);
-  const hero=homeHero(spotItems[0]);if(hero)main.appendChild(hero);
+  const hero=homeHeroSlider(spotItems);if(hero)main.appendChild(hero);
   // compact library strip
   const strip=document.createElement('div');strip.className='homestrip';
   strip.textContent=`${S.movies.length.toLocaleString()} movies · ${S.series.length.toLocaleString()} series · ${S.live.length.toLocaleString()} live`;
