@@ -555,7 +555,7 @@
   .sheet-scrim.show{display:flex}
   .sheet{width:780px;max-width:100%;max-height:88dvh;overflow-y:auto;border-radius:28px;position:relative;
     background:var(--glass);backdrop-filter:var(--blur);border:1px solid var(--hair-bright);box-shadow:var(--shadow)}
-  .sheet .shero{position:relative;min-height:300px;border-radius:28px 28px 0 0;overflow:hidden;display:flex;align-items:flex-end;padding:26px}
+  .sheet .shero{position:relative;min-height:360px;border-radius:28px 28px 0 0;overflow:hidden;display:flex;align-items:flex-end;padding:28px}
   .sheet .shero .art{position:absolute;inset:0;background-size:cover;background-position:center 20%}
   .sheet .shero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,22,30,.96),transparent 70%),linear-gradient(90deg,rgba(20,22,30,.7),transparent 60%)}
   .sheet .shero .sx{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:12px;z-index:3;display:grid;place-items:center;
@@ -563,17 +563,19 @@
   .sheet .shero .sm{position:relative;z-index:2;display:flex;gap:20px;align-items:flex-end}
   .sheet .shero .spos{width:120px;height:180px;border-radius:14px;overflow:hidden;flex:0 0 auto;border:1px solid var(--hair-bright);box-shadow:0 12px 30px rgba(0,0,0,.5);background:#10141d}
   .sheet .shero .spos img{width:100%;height:100%;object-fit:cover}
-  .sheet .shero .sinfo h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
-  .sheet .shero .sinfo .stags{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:13px;font-weight:500;align-items:center}
-  .sheet .shero .sinfo .stags .badge{border:1px solid var(--hair-bright);border-radius:6px;padding:1px 7px;font-size:12px}
-  .sheet .sbody{padding:22px 26px 26px}
-  .sheet .sbody .sover{font-size:14.5px;line-height:1.6;color:rgba(235,238,245,.82);margin-bottom:18px}
-  .sheet .splay{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-  .sheet .splay .gbtn{padding:12px 22px;font-size:15px;border-radius:16px}
-  .sheet .splay .play{background:#fff;color:#000;font-weight:700}
+  .sheet .shero .sinfo h1{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+  .sheet .shero .sinfo .stags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:13px;font-weight:600;align-items:center}
+  .sheet .shero .sinfo .stags .badge{border:1px solid var(--hair-bright);border-radius:20px;padding:3px 11px;font-size:12px;background:rgba(0,0,0,.32);backdrop-filter:blur(6px)}
+  .sheet .shero .sinfo .stags .star{color:var(--amber);font-weight:800}
+  .sheet .shero .sinfo .stags .genre{border:1px solid var(--hair);border-radius:20px;padding:3px 11px;font-size:12px;color:var(--text)}
+  .sheet .sbody{padding:24px 28px 28px}
+  .sheet .sbody .sover{font-size:14.5px;line-height:1.65;color:rgba(245,245,242,.8);margin-bottom:18px}
+  .sheet .splay{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .sheet .splay .gbtn{padding:13px 24px;font-size:15px;border-radius:14px}
+  .sheet .splay .play{background:linear-gradient(180deg,#E4BC65,#D6A64A);color:#0b0b0c;font-weight:700;box-shadow:0 6px 20px rgba(214,166,74,.3)}
   .seasons{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 12px}
   .seasonchip{font-size:13px;padding:7px 14px;border-radius:14px;background:var(--glass-2);border:1px solid var(--hair);color:var(--muted)}
-  .seasonchip.active{background:#fff;color:#000;font-weight:600}
+  .seasonchip.active{background:linear-gradient(180deg,#E4BC65,#D6A64A);color:#0b0b0c;font-weight:700;border-color:transparent}
   .eplist{display:flex;flex-direction:column;gap:8px}
   .epitem{display:flex;align-items:center;gap:14px;padding:12px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid var(--hair);cursor:pointer;transition:.15s}
   .epitem:hover{background:var(--glass-3)}
@@ -582,6 +584,14 @@
   .epitem .epi b{font-size:14px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .epitem .epi span{font-size:12px;color:var(--muted-2)}
   .epitem .eppl{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--blue)}
+  .epitem .epthumb{width:104px;height:59px;border-radius:9px;overflow:hidden;background:var(--glass-2);flex:0 0 auto;position:relative;border:1px solid var(--hair)}
+  .epitem .epthumb img{width:100%;height:100%;object-fit:cover}
+  .epitem .epthumb .epn2{position:absolute;top:4px;left:5px;font-size:11px;font-weight:800;background:rgba(0,0,0,.62);padding:1px 6px;border-radius:6px}
+  @media (max-width:560px){.epitem .epthumb{width:76px;height:44px}}
+  .sheet .morelike{margin-top:24px}
+  .sheet .morelike h2{font-size:17px;font-weight:700;margin-bottom:12px;font-family:'Sora','Inter',sans-serif}
+  .sheet .morelike .mlrow{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+  .sheet .morelike .mlrow::-webkit-scrollbar{display:none}
 
   /* ---------- Modal (add playlist / settings) ---------- */
   .scrim{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
@@ -2266,50 +2276,81 @@ function openMovie(it,card){
   const scrim=$('#sheetScrim'),sheet=$('#sheet');
   const backdrop=card&&card.dataset.backdrop?card.dataset.backdrop:(it.backdrop||it.logo||'');
   const overview=card&&card.dataset.overview?card.dataset.overview:(it.overview||'');
-  const year=(card&&card.dataset.pyear)?card.dataset.pyear:(metaOf(it).year||'');
-  const rate=card?card.querySelector('.rate').textContent:'';
-  sheet.innerHTML=`<div class="shero"><div class="art" style="${backdrop?`background-image:url('${esc(backdrop)}')`:''}"></div>
+  const m=metaOf(it);
+  const year=(card&&card.dataset.pyear)?card.dataset.pyear:(m.year||'');
+  const rate=card?(card.querySelector('.rate')?card.querySelector('.rate').textContent:''):(it.rating||'');
+  const bits=[];
+  if(rate)bits.push(`<span class="badge"><span class="star">★</span> ${esc(rate)}</span>`);
+  if(year)bits.push(`<span class="badge">${esc(year)}</span>`);
+  if(m.q)bits.push(`<span class="badge">${esc(m.q)}</span>`);
+  [it.group,m.lang].filter(Boolean).forEach(g=>bits.push(`<span class="genre">${esc(g)}</span>`));
+  sheet.innerHTML=`<div class="shero"><div class="art" style="${backdrop?`background-image:url('${esc(imgURL(backdrop))}')`:''}"></div>
       <button class="sx" id="sheetX">✕</button>
       <div class="sm">
         <div class="spos">${it.logo?`<img src="${esc(imgURL(it.logo))}" data-raw="${esc(it.logo)}" alt="" onerror="imgFb(this)">`:''}</div>
         <div class="sinfo"><h1>${esc(it.name)}</h1>
-          <div class="stags">${rate?`<span class="badge" style="border-color:var(--amber);color:var(--amber)">★ ${esc(rate)}</span>`:''}${year?`<span>${esc(year)}</span>`:''}<span class="badge">${esc(it.group||'Movie')}</span></div>
+          <div class="stags">${bits.join('')}</div>
         </div></div></div>
     <div class="sbody">
-      <div class="splay"><button class="gbtn play" id="sheetPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Play</button>
-        <button class="gbtn" id="sheetFav">${S.favorites[favKey(it)]?'★ In Favorites':'☆ Add to Favorites'}</button></div>
+      <div class="splay">
+        <button class="gbtn play" id="sheetPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Watch Now</button>
+        <button class="gbtn" id="sheetFav">${S.favorites[favKey(it)]?'★ In My List':'＋ My List'}</button>
+        <button class="gbtn" id="sheetInfo" title="Open in app" style="padding:13px;border-radius:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 3h7v7M21 3l-9 9"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg></button>
+      </div>
       <p class="sover" id="sheetOver">${esc(overview||'No description available. Add a TMDB or TheTVDB key in Settings for full details.')}</p>
+      <div class="morelike" id="sheetMore"></div>
     </div>`;
   if(backdrop)setBg(imgURL(backdrop));
-  scrim.classList.add('show');
-  $('#sheetX').onclick=closeSheet; $('#sheetPlay').onclick=()=>{closeSheet();addRecent(it);openExternal(it.url,it.name);};
-  $('#sheetFav').onclick=()=>{toggleFav(it);$('#sheetFav').textContent=S.favorites[favKey(it)]?'★ In Favorites':'☆ Add to Favorites';};
-  if(!overview&&hasMetaKey()){const yy=metaOf(it).year;metaSearch(it.name,'movie',yy).then(m=>{if(m&&m.yearOk){if(m.overview)$('#sheetOver').textContent=m.overview;if(m.backdrop){$('.shero .art',sheet).style.backgroundImage=`url('${m.backdrop}')`;setBg(m.backdrop);}}});}
+  scrim.classList.add('show');sheet.scrollTop=0;
+  $('#sheetX').onclick=closeSheet;
+  $('#sheetPlay').onclick=()=>{closeSheet();addRecent(it);openExternal(it.url,it.name);};
+  $('#sheetFav').onclick=()=>{toggleFav(it);$('#sheetFav').textContent=S.favorites[favKey(it)]?'★ In My List':'＋ My List';};
+  $('#sheetInfo').onclick=()=>{addRecent(it);S._extUrl=it.url;S._extTitle=it.name;openExtSheet();};
+  const sims=S.movies.filter(x=>x.group===it.group&&favKey(x)!==favKey(it)).slice(0,18);
+  if(sims.length){const box=$('#sheetMore');box.innerHTML='<h2>More Like This</h2><div class="mlrow"></div>';const row=box.querySelector('.mlrow');sims.forEach(x=>row.appendChild(posterCard(x,'movie')));}
+  if(!overview&&hasMetaKey()){const yy=m.year;metaSearch(it.name,'movie',yy).then(mm=>{if(mm&&mm.yearOk){if(mm.overview)$('#sheetOver').textContent=mm.overview;if(mm.backdrop){$('.shero .art',sheet).style.backgroundImage=`url('${mm.backdrop}')`;setBg(mm.backdrop);}}});}
 }
 
 async function openSeries(it){
   const scrim=$('#sheetScrim'),sheet=$('#sheet');
+  const m=metaOf(it);const bits=[];
+  if(it.rating)bits.push(`<span class="badge"><span class="star">★</span> ${esc(it.rating)}</span>`);
+  bits.push(`<span class="genre">${esc(it.group||'Series')}</span>`);
+  if(m.lang)bits.push(`<span class="genre">${esc(m.lang)}</span>`);
   sheet.innerHTML=`<div class="shero"><div class="art" style="${it.logo?`background-image:url('${esc(imgURL(it.logo))}')`:''}"></div>
       <button class="sx" id="sheetX">✕</button>
       <div class="sm"><div class="spos">${it.logo?`<img src="${esc(imgURL(it.logo))}" data-raw="${esc(it.logo)}" onerror="imgFb(this)">`:''}</div>
-        <div class="sinfo"><h1>${esc(it.name)}</h1><div class="stags"><span class="badge">${esc(it.group||'Series')}</span></div></div></div></div>
-    <div class="sbody"><p class="sover">${esc(it.plot||'Loading episodes…')}</p><div id="seasonsWrap"><div class="center" style="min-height:120px"><div class="spin"></div></div></div></div>`;
-  scrim.classList.add('show');if(it.logo)setBg(imgURL(it.logo));
+        <div class="sinfo"><h1>${esc(it.name)}</h1><div class="stags" id="serTags">${bits.join('')}</div></div></div></div>
+    <div class="sbody">
+      <div class="splay">
+        <button class="gbtn play" id="serPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg><span id="serPlayLbl">Play</span></button>
+        <button class="gbtn" id="serFav">${S.favorites[favKey(it)]?'★ In My List':'＋ My List'}</button>
+      </div>
+      <p class="sover" id="serOver">${esc(it.plot||'Loading episodes…')}</p>
+      <div id="seasonsWrap"><div class="center" style="min-height:120px"><div class="spin"></div></div></div>
+    </div>`;
+  scrim.classList.add('show');sheet.scrollTop=0;if(it.logo)setBg(imgURL(it.logo));
   $('#sheetX').onclick=closeSheet;
-  if(hasMetaKey())metaSearch(it.name,'tv',metaOf(it).year).then(m=>{if(m&&m.yearOk){if(m.backdrop){$('.shero .art',sheet).style.backgroundImage=`url('${m.backdrop}')`;setBg(m.backdrop);}if(m.overview&&!it.plot)$('.sover',sheet).textContent=m.overview;}});
+  $('#serFav').onclick=()=>{toggleFav(it);$('#serFav').textContent=S.favorites[favKey(it)]?'★ In My List':'＋ My List';};
+  if(hasMetaKey())metaSearch(it.name,'tv',m.year).then(mm=>{if(mm&&mm.yearOk){if(mm.backdrop){$('.shero .art',sheet).style.backgroundImage=`url('${mm.backdrop}')`;setBg(mm.backdrop);}if(mm.overview&&!it.plot)$('#serOver').textContent=mm.overview;}});
   try{
     const {seasons}=await xcSeriesInfo(it);const keys=Object.keys(seasons).sort((a,b)=>(+a)-(+b));
     const wrap=$('#seasonsWrap');if(!keys.length){wrap.innerHTML='<p class="sover">No episodes found.</p>';return;}
     let cur=keys[0];
+    function playEp(eps,i){closeSheet();S.playSeries=it;addRecent(it);openExternal(eps[i].url,it.name+' · '+eps[i].title);}
     function drawEps(){const eps=seasons[cur]||[];
+      const lbl=$('#serPlayLbl');if(lbl)lbl.textContent='Play S'+cur+' E'+((eps[0]&&eps[0].ep)||1);
       wrap.innerHTML=`<div class="seasons" id="seasonChips"></div><div class="eplist" id="eplist"></div>`;
       const sc=$('#seasonChips');keys.forEach(k=>{const b=document.createElement('button');b.className='seasonchip'+(k===cur?' active':'');b.textContent='Season '+k;b.onclick=()=>{cur=k;drawEps();};sc.appendChild(b);});
       const el=$('#eplist');eps.forEach((e,i)=>{const r=document.createElement('div');r.className='epitem';
-        r.innerHTML=`<div class="epn">${esc(e.ep||i+1)}</div><div class="epi"><b>${esc(e.title)}</b><span>${e.info&&e.info.duration?esc(e.info.duration):''}</span></div>
+        const still=(e.info&&(e.info.movie_image||e.info.cover_big))?imgURL(e.info.movie_image||e.info.cover_big):(it.logo?imgURL(it.logo):'');
+        r.innerHTML=`<div class="epthumb">${still?`<img src="${esc(still)}" alt="" onerror="this.style.display='none'">`:''}<span class="epn2">${esc(e.ep||i+1)}</span></div>
+          <div class="epi"><b>${esc(e.title)}</b><span>${e.info&&e.info.duration?esc(e.info.duration):''}</span></div>
           <div class="eppl"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M8 5v14l11-7z"/></svg></div>`;
-        r.onclick=()=>{closeSheet();S.playSeries=it;addRecent(it);const queue=eps.map(x=>({name:it.name+' · '+(x.title),url:x.url,group:it.name,kind:'series'}));openExternal(queue[i].url,queue[i].name);};
+        r.onclick=()=>playEp(eps,i);
         el.appendChild(r);});
     }
+    $('#serPlay').onclick=()=>{const eps=seasons[cur]||[];if(eps.length)playEp(eps,0);};
     drawEps();
   }catch(e){$('#seasonsWrap').innerHTML='<p class="sover">Couldn\'t load episodes: '+esc(fetchErr(e))+'</p>';}
 }
