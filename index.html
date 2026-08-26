@@ -1869,6 +1869,18 @@ function collectionRails(main){
     if(r)main.appendChild(r);
   });
 }
+/* normalized title key — strips year/quality/language/codec tags anywhere,
+   so all repeated copies of a title collapse to one for de-duping */
+function titleKey(it){
+  let n=(it.name||'').toLowerCase();
+  n=n.replace(/\b(19|20)\d{2}\b/g,' ');
+  n=n.replace(/\b(4k|2160p|1080p|720p|480p|uhd|fhd|hd|sd|hdrip|webrip|web-?dl|web|bluray|blu-?ray|hdcam|cam|hdts|hdtc|hdtv|dvdscr|predvd|hq|x264|x265|hevc|h264|h265|aac|ac3|dd5|dts|esub|msub|dual|multi|audio|print)\b/g,' ');
+  n=n.replace(/\b(tamil|telugu|hindi|english|malayalam|kannada|punjabi|marathi|bengali|urdu|korean|japanese|dubbed|dub|original|org)\b/g,' ');
+  n=n.replace(/[^a-z0-9]+/g,'');
+  return n.slice(0,40);
+}
+/* keep one entry per title (the highest-rated copy) — IPTV catalogs repeat titles */
+function dedupeByTitle(arr){const seen=new Map();for(const it of arr){const k=titleKey(it);if(!k)continue;const p=seen.get(k);if(!p||(parseFloat(it.rating)||0)>(parseFloat(p.rating)||0))seen.set(k,it);}return [...seen.values()];}
 /* one slide of the featured hero slider */
 function buildHeroSlide(it){
   const m=metaOf(it);const rating=parseFloat(it.rating)||0;
@@ -2097,8 +2109,12 @@ function renderHome(){
     const base=recent.length>=10?recent:arr;
     return [...base].sort((a,b)=>rateOf(b)-rateOf(a)||(b.added||0)-(a.added||0)).slice(0,10);
   }
-  // full-width featured hero SLIDER at the very top (auto-sliding cards)
-  const spotItems=trendingSet([...S.movies,...S.series]);
+  // featured hero SLIDER — DISTINCT trending movies AND shows (deduped + interleaved)
+  const dm=trendingSet(dedupeByTitle(S.movies));
+  const ds=trendingSet(dedupeByTitle(S.series));
+  const spotItems=[];const _seenHero=new Set();
+  const pushHero=(it)=>{if(!it)return;const k=titleKey(it);if(_seenHero.has(k))return;_seenHero.add(k);spotItems.push(it);};
+  for(let i=0;i<6;i++){pushHero(dm[i]);pushHero(ds[i]);}   // alternate movie, show, movie, show…
   const hero=homeHeroSlider(spotItems);if(hero)main.appendChild(hero);
   // compact library strip
   const strip=document.createElement('div');strip.className='homestrip';
