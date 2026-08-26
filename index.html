@@ -895,6 +895,50 @@
     .backdrop .img.show,.scard .bg,#main.vt,.rippl{animation:none!important}
     .poster,.scard .bg,header.bar{transition:none!important}
   }
+
+  /* ============ Live TV — mockup two-column layout ============ */
+  .livegrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;padding:6px 40px 40px;align-items:start}
+  @media (max-width:1000px){.livegrid{grid-template-columns:1fr;padding:6px 18px 36px}}
+  .livemain{min-width:0}
+  /* featured channel hero */
+  .livehero{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/8.4;cursor:pointer;
+    background:var(--elev);border:1px solid var(--hair);box-shadow:0 22px 60px rgba(0,0,0,.55)}
+  @media (max-width:560px){.livehero{aspect-ratio:16/11}}
+  .livehero .lhbg{position:absolute;inset:-12%;background-size:cover;background-position:center;filter:blur(26px) saturate(140%) brightness(.6);transform:scale(1.15)}
+  .livehero .lhgrad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,10,.92) 0%,rgba(6,7,10,.55) 45%,rgba(6,7,10,.25) 100%),linear-gradient(0deg,rgba(6,7,10,.9),transparent 60%)}
+  .livehero .lhlive{position:absolute;top:16px;left:16px;z-index:2;display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:800;letter-spacing:1.4px;color:#fff;background:var(--live);padding:6px 11px;border-radius:9px;box-shadow:0 4px 14px rgba(217,75,75,.5)}
+  .livehero .lhlive i{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
+  .livehero .lhbody{position:absolute;left:26px;right:26px;bottom:22px;z-index:2;display:flex;flex-direction:column;gap:8px}
+  .livehero .lhlogo{width:76px;height:56px;border-radius:12px;background:rgba(255,255,255,.94);display:grid;place-items:center;overflow:hidden;margin-bottom:4px;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+  .livehero .lhlogo img{max-width:80%;max-height:74%;object-fit:contain}
+  .livehero .lhtitle{font-family:'Sora','Inter',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em;text-shadow:0 2px 18px rgba(0,0,0,.7)}
+  .livehero .lhnow{font-size:14px;color:rgba(245,245,242,.82);font-weight:600}
+  .livehero .lhbtns{display:flex;gap:12px;margin-top:12px}
+  .livehero .lhbtns .gbtn{padding:12px 22px;border-radius:14px;font-size:15px}
+  /* right channel list */
+  .liveaside{background:var(--surface);border:1px solid var(--hair);border-radius:20px;padding:16px 14px}
+  @media (max-width:1000px){.liveaside{margin-top:20px}}
+  .liveaside .rh{padding:2px 6px 12px}
+  .livelist{display:flex;flex-direction:column;gap:6px;max-height:none}
+  .lrow{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;cursor:pointer;transition:background .18s,border-color .18s;border:1px solid transparent}
+  .lrow:hover,.lrow:focus-visible{background:var(--glass-2);border-color:var(--hair)}
+  .lrow .lrlogo{width:44px;height:44px;border-radius:11px;background:var(--glass-2);display:grid;place-items:center;overflow:hidden;flex:0 0 auto;border:1px solid var(--hair)}
+  .lrow .lrlogo img{max-width:78%;max-height:70%;object-fit:contain}
+  .lrow .lrlogo b{font-size:15px;font-weight:800;color:var(--muted)}
+  .lrow .lrtx{min-width:0;flex:1}
+  .lrow .lrtx b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lrow .lrtx span{display:block;font-size:12px;color:var(--muted-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lrow .lrlive{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.6px;color:var(--live);flex:0 0 auto}
+  .lrow .lrlive i{width:6px;height:6px;border-radius:50%;background:var(--live);box-shadow:0 0 6px var(--live);animation:pulse 1.5s infinite}
+  /* featured categories */
+  .livecatgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:6px}
+  .livecat{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid var(--hair);
+    background:var(--cg,linear-gradient(135deg,#181C23,#0d0f14));display:flex;flex-direction:column;justify-content:flex-end;padding:14px;transition:transform .2s,border-color .2s}
+  .livecat:hover{transform:translateY(-4px);border-color:var(--hair-bright)}
+  .livecat::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,7,10,.82),transparent 70%)}
+  .livecat .lcname{position:relative;z-index:1;font-family:'Sora','Inter',sans-serif;font-weight:800;font-size:15px;letter-spacing:.3px;text-transform:uppercase}
+  .livecat .lccount{position:relative;z-index:1;font-size:11.5px;color:rgba(245,245,242,.7);margin-top:2px}
 </style>
 </head>
 <body>
@@ -2051,6 +2095,91 @@ function emptyState(){
   return d;
 }
 
+function nextProg(id){const l=S.epg[id];if(!l)return null;const t=Date.now();for(const p of l)if(p.start>t)return p;return null;}
+function liveInitials(it){return (it.name||'?').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase()||'TV';}
+/* Live TV — featured channel + channel list + featured categories (mockup layout) */
+function renderLive(){
+  const main=$('#main');
+  const all=S.live;
+  if(!all.length){main.innerHTML='';const c=document.createElement('div');c.className='center';
+    c.innerHTML=`<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div><h2>No live channels</h2><p>This playlist has no live TV. Add an Xtream Codes or M3U source with live channels.</p>`;
+    main.appendChild(c);return;}
+  const groups=[...new Set(all.map(x=>x.group))].sort((a,b)=>a.localeCompare(b));
+  const q=(S.query||'').toLowerCase();
+  let cat='__all',showAll=false,guide=false;
+  main.innerHTML=`<div class="secthead"><h1>Live TV</h1>
+      <button class="gbtn" id="tvGuideBtn" style="margin-left:auto;padding:9px 16px;border-radius:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>TV Guide</button>
+    </div>
+    <div class="catbar" id="catbar"></div>
+    <div class="livegrid">
+      <div class="livemain">
+        <div id="liveHero"></div>
+        <div class="rh" style="padding:0;margin:26px 2px 12px"><h2>Featured Categories</h2></div>
+        <div class="livecatgrid" id="liveCatGrid"></div>
+      </div>
+      <div class="liveaside">
+        <div class="rh"><h2>Live Channels</h2></div>
+        <div class="livelist" id="liveList"></div>
+        <button class="gbtn" id="liveViewAll" style="width:100%;justify-content:center;margin-top:12px;padding:11px;border-radius:12px">View All Channels</button>
+      </div>
+    </div>`;
+  function listFor(){let l=cat==='__all'?all:all.filter(x=>x.group===cat);if(q)l=l.filter(x=>x.name.toLowerCase().includes(q));return l;}
+  const cb=$('#catbar');
+  function chip(label,val){const b=document.createElement('button');b.className='catchip'+(val===cat?' active':'');b.textContent=label;b.onclick=()=>{cat=val;showAll=false;$$('.catchip',cb).forEach(x=>x.classList.remove('active'));b.classList.add('active');drawHero();drawList();};return b;}
+  cb.appendChild(chip('All','__all'));groups.forEach(g=>cb.appendChild(chip(g,g)));
+  function drawHero(){
+    const it=listFor()[0];const wrap=$('#liveHero');
+    if(!it){wrap.innerHTML='<div class="center" style="min-height:180px"><p>No channels here.</p></div>';return;}
+    const np=it.tvgId?nowProg(it.tvgId):null;
+    const bg=it.logo?`background-image:url('${esc(imgURL(it.logo))}')`:'';
+    wrap.innerHTML=`<div class="livehero" tabindex="0">
+      <div class="lhbg" style="${bg}"></div><div class="lhgrad"></div>
+      <span class="lhlive"><i></i>LIVE</span>
+      <div class="lhbody">
+        ${it.logo?`<div class="lhlogo"><img src="${esc(imgURL(it.logo))}" alt="" onerror="this.closest('.lhlogo').style.display='none'"></div>`:''}
+        <div class="lhtitle">${esc(it.name)}</div>
+        <div class="lhnow">${np?('Now: '+esc(np.title)):esc(it.group||'Live channel')}</div>
+        <div class="lhbtns">
+          <button class="gbtn accent" id="lhPlay"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>Watch Live</button>
+          <button class="gbtn" id="lhFav">${S.favorites[favKey(it)]?'★ Saved':'☆ My List'}</button>
+        </div>
+      </div></div>`;
+    $('#lhPlay').onclick=(e)=>{e.stopPropagation();playLive(it);};
+    $('.livehero',wrap).onclick=(e)=>{if(e.target.closest('.gbtn'))return;playLive(it);};
+    $('#lhFav').onclick=(e)=>{e.stopPropagation();toggleFav(it);$('#lhFav').textContent=S.favorites[favKey(it)]?'★ Saved':'☆ My List';};
+  }
+  function drawList(){
+    const l=listFor();const shown=showAll?l.slice(0,500):l.slice(0,20);
+    const box=$('#liveList');box.innerHTML='';
+    shown.forEach(it=>{
+      const np=it.tvgId?nowProg(it.tvgId):null;const nx=(guide&&it.tvgId)?nextProg(it.tvgId):null;
+      const row=document.createElement('div');row.className='lrow';row.tabIndex=0;
+      const sub=guide?(((np?('Now: '+np.title):'')+(nx?(' · Next: '+nx.title):''))||(it.group||'')):(np?('Now: '+np.title):(it.group||''));
+      row.innerHTML=`<div class="lrlogo">${it.logo?`<img data-src="${esc(imgURL(it.logo))}" data-raw="${esc(it.logo)}" alt="" onerror="imgFb(this)">`:`<b>${esc(liveInitials(it))}</b>`}</div>
+        <div class="lrtx"><b>${esc(it.name)}</b><span>${esc(sub)}</span></div>
+        <span class="lrlive"><i></i>LIVE</span>`;
+      const lz=row.querySelector('img[data-src]');if(lz)lazyObs.observe(lz);
+      row.onclick=()=>playLive(it);
+      box.appendChild(row);
+    });
+    const va=$('#liveViewAll');if(va)va.style.display=(!showAll&&l.length>20)?'':'none';
+  }
+  function drawCats(){
+    const grid=$('#liveCatGrid');grid.innerHTML='';
+    const counts=groups.map(g=>[g,all.filter(x=>x.group===g).length]).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const grads=['linear-gradient(135deg,#7a1f1f,#2a0f0f)','linear-gradient(135deg,#1f3a7a,#0f1730)','linear-gradient(135deg,#6b4d12,#241a06)','linear-gradient(135deg,#5a1f6b,#22102a)','linear-gradient(135deg,#125a4d,#062420)','linear-gradient(135deg,#6b5312,#241d06)','linear-gradient(135deg,#3a3f4a,#12141a)','linear-gradient(135deg,#7a3a12,#2a1406)'];
+    counts.forEach(([g,c],i)=>{const b=document.createElement('button');b.className='livecat';b.style.setProperty('--cg',grads[i%grads.length]);
+      b.innerHTML=`<span class="lcname">${esc(g)}</span><span class="lccount">${c} channels</span>`;
+      b.onclick=()=>{cat=g;showAll=false;$$('.catchip',cb).forEach(x=>x.classList.toggle('active',x.textContent===g));drawHero();drawList();main.scrollTo({top:0,behavior:'smooth'});};
+      grid.appendChild(b);});
+  }
+  $('#liveViewAll').onclick=()=>{showAll=true;drawList();};
+  $('#tvGuideBtn').onclick=()=>{
+    if(!(S.epg&&Object.keys(S.epg).length)){toast('This playlist has no TV guide (EPG) data');return;}
+    guide=!guide;$('#tvGuideBtn').classList.toggle('sel',guide);toast(guide?'TV Guide: showing Now & Next':'TV Guide off');drawList();
+  };
+  drawHero();drawList();drawCats();
+}
 function renderSection(kind){
   const main=$('#main');
   const all = kind==='live'?S.live : kind==='movies'?S.movies : S.series;
@@ -2123,7 +2252,7 @@ function render(){
   if(S.query&&S.tab==='home'){renderSearch();return;}
   if(S.tab==='home')renderHome();
   else if(S.tab==='streaming')renderStreaming();
-  else if(S.tab==='live')renderSection('live');
+  else if(S.tab==='live')renderLive();
   else if(S.tab==='movies')renderSection('movies');
   else renderSection('series');
 }
